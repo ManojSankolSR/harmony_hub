@@ -36,9 +36,7 @@ class Playlists {
 
         user.userPlaylists = [...UpdatedPlaylists];
         await user.save();
-      } else {
-        print("ducplicate");
-      }
+      } else {}
     }
   }
 
@@ -54,16 +52,20 @@ class Playlists {
       required TextEditingController textEditingController,
       required BuildContext context}) {
     showModalBottomSheet(
-      //backgroundColor: Colors.transparent,
+      backgroundColor: Colors.transparent,
       // showDragHandle: true,
+      useRootNavigator: true,
 
-      constraints: BoxConstraints(
-        maxWidth: MediaQuery.of(context).size.width - 40,
-      ),
       context: context,
       builder: (context) {
         return Container(
+          constraints: BoxConstraints(minHeight: 300),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Theme.of(context).colorScheme.surface),
           // height: 400,
+          margin: EdgeInsets.all(5),
+
           padding: EdgeInsets.all(10),
           child: SingleChildScrollView(
             child: Column(

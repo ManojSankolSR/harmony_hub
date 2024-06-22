@@ -12,7 +12,9 @@ class Customsnackbar {
       required this.subTitle,
       required this.context,
       required this.type}) {
+    ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        behavior: SnackBarBehavior.floating,
         backgroundColor: Colors.transparent,
         elevation: 0,
         content: AwesomeSnackbarContent(

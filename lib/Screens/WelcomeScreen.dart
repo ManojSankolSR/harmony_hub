@@ -14,7 +14,7 @@ class Welcomescreen extends ConsumerStatefulWidget {
 }
 
 class _WelcomescreenState extends ConsumerState<Welcomescreen> {
-  String _audioQuality = "360kbps";
+  String _audioQuality = "320kbps";
   String _language = "kannada";
   late TextEditingController _textEditingController;
 
@@ -90,14 +90,6 @@ class _WelcomescreenState extends ConsumerState<Welcomescreen> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Align(
-              //   alignment: Alignment.centerLeft,
-              //   child: Icon(
-              //     Icons.my_library_music_outlined,
-              //     size: 100,
-              //     color: Theme.of(context).colorScheme.primary,
-              //   ),
-              // ),
               SizedBox(
                 height: 15,
               ),
@@ -183,9 +175,11 @@ class _WelcomescreenState extends ConsumerState<Welcomescreen> {
                               context, ref,
                               isFromWlecomeScreen: true);
                       ;
-                      setState(() {
-                        _language = data[0];
-                      });
+                      if (data != null && data[0] != "") {
+                        setState(() {
+                          _language = data[0];
+                        });
+                      }
 
                       // _showModalBottomSheetCustom(false, context);
                     },
@@ -200,9 +194,11 @@ class _WelcomescreenState extends ConsumerState<Welcomescreen> {
                             await Userpreferredquality.showQualitySelectDialog(
                                 context,
                                 isFromWlecomeScreen: true);
-                        setState(() {
-                          _audioQuality = data[0];
-                        });
+                        if (data != null && data[0] != "") {
+                          setState(() {
+                            _audioQuality = data[0];
+                          });
+                        }
 
                         // _showModalBottomSheetCustom(true, context);
                       },

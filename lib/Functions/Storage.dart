@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:audiotags/audiotags.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:harmony_hub/DataModels/UserModel.dart';
+import 'package:harmony_hub/Functions/AppPermissions.dart';
 import 'package:harmony_hub/Functions/UserPreferredQuality.dart';
 import 'package:harmony_hub/Hive/Boxes.dart';
 import 'package:harmony_hub/Widgets/CustomSnackbar.dart';
@@ -42,17 +44,16 @@ class Downloads {
   static Future downloadSong(
       Map<String, dynamic> Songdata, BuildContext context) async {
     PermissionStatus storagePermissionStatus =
-        await Permission.storage.request();
+        await AppPermissions.requestStoragePermissions();
 
     if (storagePermissionStatus == PermissionStatus.granted) {
-      final String Songtitle = Songdata["name"];
+      final String Songtitle =
+          Songdata["name"].replaceAll(RegExp('[^A-Za-z0-9]'), '');
 
       final String download_url =
           Userpreferredquality.getUserPereferedQualityLinkFomData(
               Songdata["download_url"]);
-      // .firstWhere(
-      //   (e) => e["quality"] == Boxes.getUserrPeferedAudioQuality(),
-      // )["link"];
+
       final dir = await path.getExternalStorageDirectories(
           type: path.StorageDirectory.music);
       final savepath = "/storage/emulated/0/Music/$Songtitle.m4a";
@@ -64,7 +65,7 @@ class Downloads {
             ? Songdata["image"][2]["link"]
             : Songdata["image"],
       ));
-      print("ar ${Songdata["artist_map"]["artists"][0]["name"]}");
+
       await AudioTags.write(
           "/storage/emulated/0/Music/$Songtitle.m4a",
           Tag(
@@ -81,20 +82,21 @@ class Downloads {
       addDownloadedSongId(Songdata["id"]);
       Customsnackbar(
           title: "Song Downloaded",
-          subTitle: "$savepath",
+          subTitle: "Check In Downloads Section",
           context: context,
           type: ContentType.success);
     } else {
-      storagePermissionStatus = await Permission.storage.request();
+      storagePermissionStatus =
+          await AppPermissions.requestStoragePermissions();
     }
   }
 
   static Future deleteDownloadedFile(
       String name, BuildContext context, String id) async {
     String path = "/storage/emulated/0/Music/$name";
-    print(path);
+
     File file = File(path);
-    print(await file.exists());
+
     if (await file.exists()) {
       await file.delete();
       deleteDownloadedSongId(id);

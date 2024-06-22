@@ -1,9 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harmony_hub/Navigation.dart';
+import 'package:harmony_hub/Widgets/AddToPlaylistButton.dart';
+import 'package:harmony_hub/Widgets/DownloadButton.dart';
+import 'package:harmony_hub/Widgets/LikeButton.dart';
 
-class CategorylistviewWidget extends StatelessWidget {
+class CategorylistviewWidget extends ConsumerWidget {
   final List<dynamic?> searchcategoryData;
   final String categoryTitle;
 
@@ -12,7 +16,7 @@ class CategorylistviewWidget extends StatelessWidget {
       required this.searchcategoryData,
       required this.categoryTitle});
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return searchcategoryData.isEmpty
         ? SizedBox()
         : Column(
@@ -27,7 +31,8 @@ class CategorylistviewWidget extends StatelessWidget {
                 child: Text(
                   categoryTitle,
                   textAlign: TextAlign.start,
-                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                      fontSize: 19,
                       fontWeight: FontWeight.w500,
                       color: Theme.of(context).colorScheme.primary),
                 ),
@@ -66,26 +71,32 @@ class CategorylistviewWidget extends StatelessWidget {
                     ),
                     onTap: () {
                       CustomNavigation.NavigateTo(
+                          ref: ref,
                           searchcategoryData[index]["type"],
                           context,
                           searchcategoryData[index]["id"],
-                          // searchcategoryData[index]["type"] == "song"
-                          //     ? [searchcategoryData[index]]
-                          //     :
-                          searchcategoryData,
-                          index,
+                          searchcategoryData[index]["type"] == "song"
+                              ? searchcategoryData
+                              : searchcategoryData,
+                          searchcategoryData[index]["type"] == "song"
+                              ? index
+                              : 0,
                           false);
                     },
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(onPressed: () {}, icon: Icon(Icons.share)),
-                        IconButton(
-                            onPressed: () {}, icon: Icon(Icons.download)),
-                      ],
-                    )),
+                    trailing: searchcategoryData[index]["type"] == "song"
+                        ? Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Likebutton(songData: searchcategoryData[index]),
+                              AddToPlayListButton(
+                                  songdata: searchcategoryData[index]),
+                              DownloadButton(
+                                  songData: searchcategoryData[index]),
+                            ],
+                          )
+                        : null),
               )
             ],
           );

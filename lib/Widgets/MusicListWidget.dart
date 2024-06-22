@@ -1,15 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harmony_hub/Navigation.dart';
 import 'package:harmony_hub/Screens/TracksListScreen.dart';
 
-class MusicListWidget extends StatelessWidget {
+class MusicListWidget extends ConsumerWidget {
   final Map<String, dynamic> musicData;
 
   const MusicListWidget({super.key, required this.musicData});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final bool isLightMode = Theme.of(context).brightness == Brightness.light;
     // TODO: implement build
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,6 +40,7 @@ class MusicListWidget extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                   onTap: () {
                     CustomNavigation.NavigateTo(
+                      ref: ref,
                       musicData["data"][index]["type"],
                       context,
                       musicData["data"][index]["id"],
@@ -79,6 +82,9 @@ class MusicListWidget extends StatelessWidget {
                                   ? musicData["data"][index]["image"][2]["link"]
                                   : musicData["data"][index]["image"]),
                         ),
+                        // SizedBox(
+                        //   height: 2,
+                        // ),
                         Text(
                           musicData["data"][index]["name"],
                           style: Theme.of(context)
@@ -94,7 +100,9 @@ class MusicListWidget extends StatelessWidget {
                               .textTheme
                               .labelSmall!
                               .copyWith(
-                                  color: Colors.white70,
+                                  color: isLightMode
+                                      ? Colors.black87
+                                      : Colors.white70,
                                   fontWeight: FontWeight.w400),
                           softWrap: false,
                           overflow: TextOverflow.ellipsis,

@@ -1,18 +1,19 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harmony_hub/Navigation.dart';
 import 'package:m3_carousel/m3_carousel.dart';
 
-class Musiclistwidget2 extends StatefulWidget {
+class Musiclistwidget2 extends ConsumerStatefulWidget {
   final Map<String, dynamic> musicData;
   Musiclistwidget2({super.key, required this.musicData});
 
   @override
-  State<Musiclistwidget2> createState() => _Musiclistwidget2State();
+  ConsumerState<Musiclistwidget2> createState() => _Musiclistwidget2State();
 }
 
-class _Musiclistwidget2State extends State<Musiclistwidget2> {
+class _Musiclistwidget2State extends ConsumerState<Musiclistwidget2> {
   int _currentIndex = 0;
 
   @override
@@ -41,6 +42,7 @@ class _Musiclistwidget2State extends State<Musiclistwidget2> {
                 childClick: (p0) {
                   final data = widget.musicData["data"][p0];
                   CustomNavigation.NavigateTo(
+                      ref: ref,
                       data["type"],
                       context,
                       data["id"],

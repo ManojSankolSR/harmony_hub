@@ -47,7 +47,7 @@ class SeedColor {
       Color data = Boxes.UserBox.get("user")!.seedColor;
       return data;
     }
-    return Colors.tealAccent;
+    return const Color.fromARGB(255, 74, 0, 87);
   }
 
   static Future updateSeedColor(Color seedcolor) async {
@@ -62,6 +62,7 @@ class SeedColor {
     showModalBottomSheet(
       showDragHandle: true,
       enableDrag: true,
+      useRootNavigator: true,
       context: context,
       builder: (context) => CustomScrollView(
         slivers: [

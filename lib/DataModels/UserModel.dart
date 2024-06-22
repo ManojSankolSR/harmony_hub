@@ -36,7 +36,7 @@ class UserModel extends HiveObject {
   List<String> downloadedSongIds;
 
   UserModel({
-    this.seedColor = Colors.tealAccent,
+    this.seedColor = const Color.fromARGB(255, 74, 0, 87),
     this.latSessionSongs = const {},
     this.homeScreenData = const {},
     this.songsHistory = const [],

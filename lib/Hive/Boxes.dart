@@ -38,11 +38,10 @@ class Boxes {
       final isDuplicate =
           Boxes.getSongsHistory().any((e) => e["id"] == data["id"]);
       if (isDuplicate) {
-        print("contains");
         List<Map<String, dynamic>> list = user.songsHistory;
         final index =
             list.indexWhere((e) => e["download_url"] == data["download_url"]);
-        print("index $index");
+
         if (index >= 0) {
           list.removeAt(index);
 
@@ -52,7 +51,6 @@ class Boxes {
           ];
         }
       } else {
-        print("not contains");
         user.songsHistory = [
           data,
           ...user.songsHistory,
@@ -71,7 +69,6 @@ class Boxes {
 
   static Future saveHomeScreendata(Map<String, dynamic> data) async {
     if (UserBox.containsKey("user")) {
-      print("runT ${data.runtimeType}");
       UserModel user = Boxes.UserBox.get("user")!;
       user.homeScreenData = data;
       user.save();

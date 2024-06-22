@@ -1,10 +1,14 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:harmony_hub/Functions/MusicPlayer.dart';
+import 'package:harmony_hub/Providers/SavanApiProvider.dart';
 import 'package:harmony_hub/Screens/ArtistDetailsScreen.dart';
 import 'package:harmony_hub/Screens/SongPlayScreen.dart';
 import 'package:harmony_hub/Screens/TracksListScreen.dart';
 
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 class CustomNavigation {
   static NavigateTo(
@@ -13,10 +17,15 @@ class CustomNavigation {
     String? id,
     List<dynamic>? AudioData,
     int? startIndex,
-    bool fromMiniPlayer,
-  ) {
+    bool fromMiniPlayer, {
+    bool isfromOffline = false,
+    required WidgetRef ref,
+  }) {
+    print(type);
     switch (type) {
       case "playlist" || "album":
+        // pushScreenWithNavBar(context, Trackslistscreen(id: id!, type: type));
+
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -25,38 +34,49 @@ class CustomNavigation {
 
         break;
       case "song":
-        print("starin $startIndex");
+        Musicplayer.setUpAudioPlayer(ref,
+            AudioData: AudioData ?? [], startIndex: startIndex ?? 0);
+        ref.read(globalPlayerProvider).play();
+        // Navigator.push(
+        //     context,
+        //     MaterialPageRoute(
+        //       builder: (context) => SongsPlayScreen(
+        //         AudioData: AudioData ?? [],
+        //         startIndex: startIndex ?? 0,
+        //         fromMiniPlayer: fromMiniPlayer,
+        //       ),
+        //     ));
+
+        break;
+
+      case "artist":
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => SongsPlayScreen(
-                AudioData: AudioData ?? [],
-                startIndex: startIndex ?? 0,
-                fromMiniPlayer: fromMiniPlayer,
+              builder: (context) => Artistdetailsscreen(
+                id: id!,
               ),
             ));
 
         break;
 
-      case "radio_station" || "artist":
-        print(AudioData![0]["subtitle"]);
-        print(type);
-        if (AudioData![0]["subtitle"] == "Artist Radio" ||
-            AudioData[0]["subtitle"] == "Artist" ||
-            AudioData![0]["subtitle"] == null) {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Artistdetailsscreen(
-                  id: id!,
-                ),
-              ));
-        } else {
-          _showDevWarning(context);
-          return;
-        }
+      // case "radio_station" || "artist":
+      //   if (AudioData![0]["subtitle"] == "Artist Radio" ||
+      //       AudioData[0]["subtitle"] == "Artist" ||
+      //       AudioData![0]["subtitle"] == null) {
+      //     Navigator.push(
+      //         context,
+      //         MaterialPageRoute(
+      //           builder: (context) => Artistdetailsscreen(
+      //             id: id!,
+      //           ),
+      //         ));
+      //   } else {
+      //     _showDevWarning(context);
+      //     return;
+      //   }
 
-        break;
+      //   break;
 
       default:
         _showDevWarning(context);

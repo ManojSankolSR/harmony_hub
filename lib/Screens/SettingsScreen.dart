@@ -9,6 +9,7 @@ import 'package:harmony_hub/Hive/Boxes.dart';
 import 'package:harmony_hub/DataModels/UserModel.dart';
 import 'package:harmony_hub/Functions/language.dart';
 import 'package:harmony_hub/Providers/SavanApiProvider.dart';
+import 'package:harmony_hub/Providers/ThemeProvider.dart';
 import 'package:harmony_hub/Providers/seedColorProvider.dart';
 import 'package:hive_flutter/adapters.dart';
 
@@ -20,29 +21,55 @@ class Settingsscreen extends ConsumerStatefulWidget {
 class _SettingsscreenState extends ConsumerState<Settingsscreen> {
   @override
   Widget build(BuildContext context) {
+    final _themeMode = ref.watch(ThemeModeProvider);
     // TODO: implement build
     return CustomScrollView(
       slivers: [
         SliverAppBar.medium(
-          title: Row(
-            children: [
-              Text(
-                "Sett",
-              ),
-              Text("ings",
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.primary,
-                  ))
-            ],
+          stretch: true,
+          flexibleSpace: FlexibleSpaceBar(
+            centerTitle: true,
+            stretchModes: [StretchMode.fadeTitle],
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Sett",
+                ),
+                Text("ings  ",
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                    )),
+                Icon(
+                  Icons.settings,
+                  color: Theme.of(context).colorScheme.primary,
+                )
+              ],
+            ),
+            background: Container(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                    Theme.of(context).colorScheme.onPrimary,
+                    Theme.of(context).colorScheme.surface,
+                  ])),
+            ),
           ),
-          leading: Builder(builder: (context) {
-            return IconButton(
-              icon: Icon(Icons.horizontal_split_rounded),
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-            );
-          }),
+          expandedHeight: 150,
+          centerTitle: true,
+          leading: Builder(
+            builder: (context) {
+              return IconButton(
+                icon: Icon(Icons.horizontal_split_rounded),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+              );
+            },
+          ),
+          pinned: true,
         ),
         SliverToBoxAdapter(
           child: Padding(
@@ -87,6 +114,83 @@ class _SettingsscreenState extends ConsumerState<Settingsscreen> {
                               borderRadius: BorderRadius.circular(5)),
                         ),
                         subtitle: Text("Color Will Be Applied Globally"),
+                      ),
+                      ListTile(
+                        onTap: () {
+                          showModalBottomSheet<dynamic>(
+                              isScrollControlled: true,
+                              isDismissible: true,
+                              useRootNavigator: true,
+                              backgroundColor: Colors.transparent,
+                              // shape: const RoundedRectangleBorder(
+                              //   borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+                              // ),
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Container(
+                                  height: 230,
+                                  margin: EdgeInsets.all(10),
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .surface),
+                                  child: CustomScrollView(
+                                    physics: NeverScrollableScrollPhysics(),
+                                    slivers: [
+                                      SliverAppBar(
+                                        pinned: true,
+                                        scrolledUnderElevation: 0,
+                                        elevation: 0,
+                                        automaticallyImplyLeading: false,
+                                        centerTitle: true,
+                                        titleSpacing: 0,
+                                        toolbarHeight: 30,
+                                        primary: false,
+                                        title: Container(
+                                          height: 5,
+                                          width: 40,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              color: Colors.grey),
+                                        ),
+                                      ),
+                                      SliverList.builder(
+                                        itemCount: ThemeMode.values.length,
+                                        itemBuilder: (context, index) {
+                                          bool isSelectedQuality = _themeMode ==
+                                              ThemeMode.values[index];
+                                          return ListTile(
+                                            leading:
+                                                Icon(Icons.brightness_4_sharp),
+                                            onTap: () async {
+                                              ref
+                                                  .read(ThemeModeProvider
+                                                      .notifier)
+                                                  .changeThemeMode(
+                                                      ThemeMode.values[index]);
+                                              Navigator.pop(context);
+                                            },
+                                            trailing: isSelectedQuality
+                                                ? Icon(Icons.verified_outlined)
+                                                : null,
+                                            title: Text(
+                                              ThemeMode.values[index].name
+                                                  .toUpperCase(),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              });
+                        },
+                        leading: Icon(Icons.brightness_2),
+                        title: Text("Theme"),
+                        subtitle: Text("Choose Theme"),
                       ),
                     ],
                   );

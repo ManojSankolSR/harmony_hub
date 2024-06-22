@@ -29,11 +29,74 @@ class SavanApi {
     return jsonDecode(data.body)["data"];
   }
 
+  static Future<Map<String, dynamic>> getSongData(String id) async {
+    final data = await http
+        .get(Uri.parse("https://jiosaavn-api-ts.vercel.app/song?id=$id"));
+
+    return jsonDecode(data.body)["data"];
+  }
+
   static Future<Map<String, dynamic>> getArtistdata(String id) async {
     final data = await http
         .get(Uri.parse("https://jiosaavn-api-ts.vercel.app/artist?id=$id"));
 
     return jsonDecode(data.body)["data"];
+  }
+
+  static Future<Map<String, dynamic>> getSearchdata(String query) async {
+    final data = await http
+        .get(Uri.parse("https://jiosaavn-api-ts.vercel.app/search?q=$query"));
+    List<Map<String, dynamic>> newSongs = [];
+
+    Map<String, dynamic> decodedData = jsonDecode(data.body)["data"];
+
+    if (decodedData.containsKey("top_query")) {
+      final List topquerydata = decodedData["top_query"]["data"];
+      if (topquerydata.isNotEmpty) {
+        List<Map<String, dynamic>> newtopquerylist = [];
+        for (Map<String, dynamic> e in topquerydata) {
+          if (e["type"] == "song") {
+            final newSonsData = await getSongData(e["id"]);
+            final listofFetchedSongs = newSonsData["songs"];
+            for (Map<String, dynamic> element in listofFetchedSongs) {
+              newtopquerylist.add(element);
+            }
+          }
+        }
+
+        decodedData["top_query"] = {
+          "data": newtopquerylist,
+        };
+      }
+    }
+
+    if (decodedData.containsKey("songs")) {
+      final songsData = decodedData["songs"]["data"];
+      if (songsData.isNotEmpty) {
+        for (Map<String, dynamic> e in songsData) {
+          final newSonsData = await getSongData(e["id"]);
+          final listofFetchedSongs = newSonsData["songs"];
+
+          for (Map<String, dynamic> song in listofFetchedSongs) {
+            newSongs.add(song);
+          }
+        }
+        decodedData["songs"] = {
+          "data": newSongs,
+        };
+      }
+    }
+
+    return decodedData;
+  }
+
+  static Future<String> getSongLyrics(String id) async {
+    final data = await http
+        .get(Uri.parse("https://jiosaavn-api-ts.vercel.app/get/lyrics?id=$id"));
+
+    final String rawlyrics = jsonDecode(data.body)["data"]["lyrics"];
+    final String lyrics = rawlyrics.toString().replaceAll('<br>', '\n');
+    return lyrics;
   }
 }
 
@@ -44,11 +107,20 @@ FutureProvider<Map<String, dynamic>> HomeScreenDataProvider = FutureProvider(
 FutureProviderFamily<Map<String, dynamic>, String> PlayListDataProvider =
     FutureProviderFamily((ref, arg) => SavanApi.getPlayListdata(arg));
 
+FutureProviderFamily<Map<String, dynamic>, String> SongDataProvider =
+    FutureProviderFamily((ref, arg) => SavanApi.getSongData(arg));
+
 FutureProviderFamily<Map<String, dynamic>, String> AlbumDataProvider =
     FutureProviderFamily((ref, arg) => SavanApi.getAlbumdata(arg));
 
 FutureProviderFamily<Map<String, dynamic>, String> ArtistDataProvider =
     FutureProviderFamily((ref, arg) => SavanApi.getArtistdata(arg));
+
+FutureProviderFamily<Map<String, dynamic>, String> SearchDataProvider =
+    FutureProviderFamily((ref, arg) => SavanApi.getSearchdata(arg));
+
+FutureProviderFamily<String, String> SongLyricsProvider =
+    FutureProviderFamily((ref, arg) => SavanApi.getSongLyrics(arg));
 
 StateProvider<AudioPlayer> globalPlayerProvider = StateProvider<AudioPlayer>(
   (ref) {

@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:harmony_hub/Functions/MusicPlayer.dart';
+import 'package:harmony_hub/Navigation.dart';
 import 'package:harmony_hub/Providers/SavanApiProvider.dart';
+import 'package:harmony_hub/Widgets/MiniPlayerNavigationHandler.dart';
 import 'package:harmony_hub/Widgets/MusicListWidget.dart';
 import 'package:harmony_hub/Widgets/CategoryListView.dart';
 import 'package:harmony_hub/Widgets/SongBottomBarWidget.dart';
@@ -20,6 +23,12 @@ class Artistdetailsscreen extends ConsumerWidget {
     final paletteGenerator = await PaletteGenerator.fromImageProvider(imageloc);
 
     return paletteGenerator.dominantColor?.color ?? Colors.transparent;
+  }
+
+  void _playTopSongs(WidgetRef ref, Map<String, dynamic> data) {
+    Musicplayer.setUpAudioPlayer(
+        AudioData: data["top_songs"], startIndex: 0, ref);
+    ref.read(globalPlayerProvider).play();
   }
 
   Widget _AlbumAndPlaylist_ListWidget(
@@ -41,7 +50,7 @@ class Artistdetailsscreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // TODO: implement build
     return Scaffold(
-      bottomNavigationBar: const Songbottombarwidget(),
+      // bottomNavigationBar: const Songbottombarwidget(),
       body: ref.watch(ArtistDataProvider(id)).when(
             data: (data) {
               return CustomScrollView(
@@ -72,53 +81,51 @@ class Artistdetailsscreen extends ConsumerWidget {
                                 ? data["image"][2]["link"]
                                 : data["image"]),
                         builder: (context, snapshot) {
-                          return Container(
-                            decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: [
-                                  snapshot.data ?? Colors.transparent,
-                                  Colors.transparent
-                                ])),
-                            clipBehavior: Clip.hardEdge,
-                            child:
-                                LayoutBuilder(builder: (context, constraints) {
-                              double _progress =
-                                  (constraints.maxHeight - 70) / (400 - 70) > 1
-                                      ? 1
-                                      : (constraints.maxHeight - 70) /
-                                          (400 - 70);
+                          return LayoutBuilder(builder: (context, constraints) {
+                            double _progress =
+                                (constraints.maxHeight - 70) / (400 - 70) > 1
+                                    ? 1
+                                    : (constraints.maxHeight - 70) / (400 - 70);
 
-                              return FlexibleSpaceBar(
-                                stretchModes: [
-                                  StretchMode.blurBackground,
-                                  StretchMode.zoomBackground
+                            return FlexibleSpaceBar(
+                              stretchModes: [
+                                StretchMode.blurBackground,
+                                StretchMode.zoomBackground
+                              ],
+                              title: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    data["name"].toString(),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(fontSize: 15),
+                                  ),
+                                  Text(
+                                    data["subtitle"].toString(),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(fontSize: 12),
+                                  ),
                                 ],
-                                title: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      data["name"].toString(),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                    Text(
-                                      data["subtitle"].toString(),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(fontSize: 12),
-                                    ),
-                                  ],
-                                ),
-                                titlePadding: EdgeInsets.lerp(
-                                    EdgeInsets.only(bottom: 10),
-                                    EdgeInsets.only(bottom: 1),
-                                    _progress),
-                                centerTitle: true,
-                                background: UnconstrainedBox(
+                              ),
+                              titlePadding: EdgeInsets.lerp(
+                                  EdgeInsets.only(bottom: 10),
+                                  EdgeInsets.only(bottom: 1),
+                                  _progress),
+                              centerTitle: true,
+                              background: Container(
+                                decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [
+                                      snapshot.data ??
+                                          Theme.of(context).colorScheme.surface,
+                                      Theme.of(context).colorScheme.surface
+                                    ])),
+                                child: UnconstrainedBox(
                                   child: Stack(
                                     children: [
                                       Container(
@@ -153,26 +160,32 @@ class Artistdetailsscreen extends ConsumerWidget {
                                       Positioned(
                                           bottom: 0,
                                           right: 45,
-                                          child: Container(
-                                            padding: EdgeInsets.all(8),
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: snapshot.data ??
-                                                  Theme.of(context)
-                                                      .colorScheme
-                                                      .onPrimaryFixedVariant,
-                                            ),
-                                            child: Icon(
-                                              Icons.play_arrow,
-                                              size: 35,
+                                          child: Material(
+                                            shape: CircleBorder(),
+                                            color: snapshot.data ??
+                                                Theme.of(context)
+                                                    .colorScheme
+                                                    .onPrimaryFixedVariant,
+                                            child: InkWell(
+                                              customBorder: CircleBorder(),
+                                              onTap: () {
+                                                _playTopSongs(ref, data);
+                                              },
+                                              child: Container(
+                                                padding: EdgeInsets.all(8),
+                                                child: Icon(
+                                                  Icons.play_arrow,
+                                                  size: 35,
+                                                ),
+                                              ),
                                             ),
                                           )).animate().scale(),
                                     ],
                                   ),
                                 ),
-                              );
-                            }),
-                          );
+                              ),
+                            );
+                          });
                         }),
                   ),
                   SliverToBoxAdapter(

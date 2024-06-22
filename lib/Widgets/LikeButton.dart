@@ -27,7 +27,7 @@ class Likebutton extends StatelessWidget {
               icon: isFavourite
                   ? Icon(
                       Icons.favorite_rounded,
-                      color: Colors.red,
+                      color: Theme.of(context).colorScheme.primary,
                       size: iconSize,
                     ).animate().scale(
                       duration: Duration(milliseconds: 700),
