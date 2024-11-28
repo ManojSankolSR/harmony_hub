@@ -7,7 +7,7 @@ class Likebutton extends StatelessWidget {
   final Map<String, dynamic> songData;
   final double iconSize;
 
-  Likebutton({super.key, required this.songData, this.iconSize = 25});
+  const Likebutton({super.key, required this.songData, this.iconSize = 25});
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
@@ -30,13 +30,13 @@ class Likebutton extends StatelessWidget {
                       color: Theme.of(context).colorScheme.primary,
                       size: iconSize,
                     ).animate().scale(
-                      duration: Duration(milliseconds: 700),
+                      duration: const Duration(milliseconds: 700),
                       curve: Curves.elasticOut)
                   : Icon(
                       Icons.favorite_border,
                       size: iconSize,
                     ).animate().scale(
-                      duration: Duration(milliseconds: 800),
+                      duration: const Duration(milliseconds: 800),
                       curve: Curves.elasticOut));
         });
   }

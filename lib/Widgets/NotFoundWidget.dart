@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
 class Notfoundwidget extends StatelessWidget {
+  const Notfoundwidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Container(
+    return SizedBox(
       height: 100,
       width: 300,
       child: Row(
@@ -24,7 +26,7 @@ class Notfoundwidget extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 "Show Here",
                 style: TextStyle(
                     height: 1.25, fontSize: 50, fontWeight: FontWeight.w600),

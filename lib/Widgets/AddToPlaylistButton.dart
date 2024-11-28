@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harmony_hub/Functions/Playlist.dart';
 
@@ -37,6 +36,6 @@ class _AddToPlayListButtonState extends State<AddToPlayListButton> {
               textEditingController: _textEditingController,
               context: context);
         },
-        icon: Icon(Icons.playlist_add));
+        icon: const Icon(Icons.playlist_add));
   }
 }

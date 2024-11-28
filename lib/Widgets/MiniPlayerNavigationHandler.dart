@@ -28,12 +28,12 @@ class MiniPlayerNavigationHandler extends ConsumerWidget {
           if (didPop) {
             return;
           }
-          final _controller = ref.watch(MiniplayerControllerProvider);
+          final controller = ref.watch(MiniplayerControllerProvider);
 
-          if (_controller.value != null &&
-              _controller.value!.panelState == PanelState.MAX) {
+          if (controller.value != null &&
+              controller.value!.panelState == PanelState.MAX) {
             print("miniplayer pop");
-            _controller.animateToHeight(state: PanelState.MIN);
+            controller.animateToHeight(state: PanelState.MIN);
             return;
           }
           _popScreen(context);

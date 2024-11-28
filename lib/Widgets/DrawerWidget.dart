@@ -6,7 +6,7 @@ class Drawerwidget extends StatefulWidget {
   final void Function(int value) changePageIndex;
 
   final PersistentTabController controller;
-  Drawerwidget(
+  const Drawerwidget(
       {super.key, required this.controller, required this.changePageIndex});
 
   @override
@@ -41,7 +41,7 @@ class _DrawerwidgetState extends State<Drawerwidget> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Container(
+                SizedBox(
                     height: 100,
                     width: 100,
                     child: Image.asset(
@@ -75,7 +75,7 @@ class _DrawerwidgetState extends State<Drawerwidget> {
                                     .onPrimaryContainer)),
                         RichText(
                             textAlign: TextAlign.start,
-                            text: TextSpan(
+                            text: const TextSpan(
                                 style: TextStyle(
                                     height: 1.1,
                                     fontSize: 30,
@@ -95,24 +95,24 @@ class _DrawerwidgetState extends State<Drawerwidget> {
               ],
             ),
           ),
-          NavigationDrawerDestination(
+          const NavigationDrawerDestination(
               icon: Icon(CupertinoIcons.home), label: Text("Home")),
-          NavigationDrawerDestination(
+          const NavigationDrawerDestination(
               selectedIcon: Icon(Icons.my_library_music_rounded),
               icon: Icon(Icons.my_library_music_outlined),
               label: Text("Playlists")),
-          NavigationDrawerDestination(
+          const NavigationDrawerDestination(
               selectedIcon: Icon(Icons.favorite),
               icon: Icon(Icons.favorite_outline_sharp),
               label: Text("Favourites")),
-          NavigationDrawerDestination(
+          const NavigationDrawerDestination(
               selectedIcon: Icon(Icons.download),
               icon: Icon(Icons.download_outlined),
               label: Text("Downloads")),
-          NavigationDrawerDestination(
+          const NavigationDrawerDestination(
               icon: Icon(Icons.history_toggle_off_outlined),
               label: Text("History")),
-          NavigationDrawerDestination(
+          const NavigationDrawerDestination(
               selectedIcon: Icon(Icons.settings),
               icon: Icon(Icons.settings_outlined),
               label: Text("settings")),

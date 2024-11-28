@@ -2,8 +2,6 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harmony_hub/Widgets/AddToPlaylistButton.dart';
 import 'package:harmony_hub/Widgets/DownloadButton.dart';
 import 'package:harmony_hub/Widgets/LikeButton.dart';
@@ -16,7 +14,7 @@ class Bottomplaylistsheet extends StatefulWidget {
   final bool isFromDownloads;
   final BuildContext context;
 
-  Bottomplaylistsheet({
+  const Bottomplaylistsheet({super.key, 
     required this.audioPlayer,
     required this.isFromDownloads,
     required this.context,
@@ -77,7 +75,7 @@ class _BottomplaylistsheetState extends State<Bottomplaylistsheet> {
           child: Container(
             height: 70,
             width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(10),
                   topRight: Radius.circular(10),
@@ -99,12 +97,12 @@ class _BottomplaylistsheetState extends State<Bottomplaylistsheet> {
                     ),
                   ),
                 ),
-                Expanded(
+                const Expanded(
                   child: Center(
                     child: Text(
                       "Up Next",
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
                       ),
@@ -123,7 +121,7 @@ class _BottomplaylistsheetState extends State<Bottomplaylistsheet> {
               child: Material(
                 color: Colors.transparent,
                 child: Container(
-                  margin: EdgeInsets.only(top: 70),
+                  margin: const EdgeInsets.only(top: 70),
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                     child: StreamBuilder(
@@ -132,7 +130,7 @@ class _BottomplaylistsheetState extends State<Bottomplaylistsheet> {
                         if (snapshot.hasData) {
                           final metadatasequence = snapshot.data!.sequence;
                           return ListView.builder(
-                            padding: EdgeInsets.all(0),
+                            padding: const EdgeInsets.all(0),
                             controller: sc,
                             itemCount: metadatasequence.length,
                             itemBuilder: (context, index) {
@@ -220,7 +218,7 @@ class _BottomplaylistsheetState extends State<Bottomplaylistsheet> {
                             },
                           );
                         } else {
-                          return CircularProgressIndicator();
+                          return const CircularProgressIndicator();
                         }
                       },
                     ),

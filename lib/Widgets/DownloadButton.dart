@@ -8,7 +8,7 @@ class DownloadButton extends StatefulWidget {
   final Map<String, dynamic> songData;
   final double iconSize;
 
-  DownloadButton({super.key, required this.songData, this.iconSize = 25});
+  const DownloadButton({super.key, required this.songData, this.iconSize = 25});
 
   @override
   State<DownloadButton> createState() => _DownloadButtonState();
@@ -41,20 +41,20 @@ class _DownloadButtonState extends State<DownloadButton> {
                       }
                     },
               icon: _isDownloading
-                  ? CircularProgressIndicator()
+                  ? const CircularProgressIndicator()
                   : isDownloaded
                       ? Icon(
                           Icons.download_done_rounded,
                           color: Theme.of(context).colorScheme.primary,
                           size: widget.iconSize,
                         ).animate().scale(
-                          duration: Duration(milliseconds: 700),
+                          duration: const Duration(milliseconds: 700),
                           curve: Curves.elasticOut)
                       : Icon(
                           Icons.file_download_outlined,
                           size: widget.iconSize,
                         ).animate().scale(
-                          duration: Duration(milliseconds: 800),
+                          duration: const Duration(milliseconds: 800),
                           curve: Curves.elasticOut));
         });
   }

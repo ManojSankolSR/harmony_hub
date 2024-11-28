@@ -1,12 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:harmony_hub/Functions/MusicPlayer.dart';
 import 'package:harmony_hub/Hive/Boxes.dart';
 import 'package:harmony_hub/Functions/Playlist.dart';
 import 'package:harmony_hub/Navigation.dart';
-import 'package:harmony_hub/Widgets/LikeButton.dart';
 import 'package:harmony_hub/Widgets/NotFoundWidget.dart';
 import 'package:harmony_hub/Widgets/PlaylistImageWidget.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -15,7 +12,7 @@ import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 class Playlistscreen extends ConsumerWidget {
   final PersistentTabController _persistentTabController;
 
-  Playlistscreen(
+  const Playlistscreen(
       {super.key, required PersistentTabController persistentTabController})
       : _persistentTabController = persistentTabController;
   @override
@@ -27,11 +24,11 @@ class Playlistscreen extends ConsumerWidget {
           stretch: true,
           flexibleSpace: FlexibleSpaceBar(
             centerTitle: true,
-            stretchModes: [StretchMode.fadeTitle],
+            stretchModes: const [StretchMode.fadeTitle],
             title: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   "Play",
                 ),
                 Text("Liststs  ",
@@ -60,7 +57,7 @@ class Playlistscreen extends ConsumerWidget {
           leading: Builder(
             builder: (context) {
               return IconButton(
-                icon: Icon(Icons.horizontal_split_rounded),
+                icon: const Icon(Icons.horizontal_split_rounded),
                 onPressed: () {
                   _persistentTabController.openDrawer();
                 },
@@ -108,9 +105,9 @@ class Playlistscreen extends ConsumerWidget {
         ValueListenableBuilder(
             valueListenable: Boxes.UserBox.listenable(),
             builder: (context, value, child) {
-              List<Map<String, dynamic>> _playlists = Playlists.getPlylists();
-              if (_playlists.isEmpty) {
-                return SliverFillRemaining(
+              List<Map<String, dynamic>> playlists = Playlists.getPlylists();
+              if (playlists.isEmpty) {
+                return const SliverFillRemaining(
                   hasScrollBody: false,
                   child: Center(child: Notfoundwidget()),
                 );
@@ -120,19 +117,19 @@ class Playlistscreen extends ConsumerWidget {
                     childAspectRatio: (1 / 1.2),
                     mainAxisSpacing: 0,
                     crossAxisCount: 2),
-                itemCount: _playlists.length,
+                itemCount: playlists.length,
                 itemBuilder: (context, index) {
                   return InkWell(
                     borderRadius: BorderRadius.circular(10),
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(
                         builder: (context) {
-                          return showPlaylist(playlist: _playlists[index]);
+                          return showPlaylist(playlist: playlists[index]);
                         },
                       ));
                     },
                     child: Container(
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         clipBehavior: Clip.antiAlias,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10)),
@@ -142,22 +139,22 @@ class Playlistscreen extends ConsumerWidget {
                             Expanded(
                               child: Playlistimagewidget(
                                   images: List.generate(
-                                    _playlists[index]["songs"].length,
+                                    playlists[index]["songs"].length,
                                     (ind) {
-                                      return _playlists[index]["songs"][ind]
+                                      return playlists[index]["songs"][ind]
                                                       ["image"]
                                                   .runtimeType ==
                                               List
-                                          ? _playlists[index]["songs"][ind]
+                                          ? playlists[index]["songs"][ind]
                                               ["image"][2]["link"]
-                                          : _playlists[index]["songs"][ind]
+                                          : playlists[index]["songs"][ind]
                                               ["image"];
                                     },
                                   ),
-                                  length: _playlists[index]["songs"].length),
+                                  length: playlists[index]["songs"].length),
                             ),
                             Text(
-                              _playlists[index]["name"],
+                              playlists[index]["name"],
                               style: Theme.of(context)
                                   .textTheme
                                   .titleMedium!
@@ -166,7 +163,7 @@ class Playlistscreen extends ConsumerWidget {
                               overflow: TextOverflow.ellipsis,
                             ),
                             Text(
-                              "${_playlists[index]["songs"].length} Songs",
+                              "${playlists[index]["songs"].length} Songs",
                               style: Theme.of(context)
                                   .textTheme
                                   .labelSmall!
@@ -248,16 +245,16 @@ class showPlaylist extends ConsumerWidget {
             stretch: true,
             flexibleSpace: FlexibleSpaceBar(
               centerTitle: true,
-              stretchModes: [
+              stretchModes: const [
                 StretchMode.fadeTitle,
                 StretchMode.blurBackground,
                 StretchMode.zoomBackground
               ],
-              titlePadding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+              titlePadding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     "PlayList : ",
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -268,7 +265,7 @@ class showPlaylist extends ConsumerWidget {
                           color: Theme.of(context).colorScheme.primary,
                         )),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Icon(
@@ -310,7 +307,7 @@ class showPlaylist extends ConsumerWidget {
             expandedHeight: 300,
             centerTitle: true,
             leading: IconButton(
-              icon: Icon(Icons.arrow_back_rounded),
+              icon: const Icon(Icons.arrow_back_rounded),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -335,7 +332,7 @@ class showPlaylist extends ConsumerWidget {
           SliverList.builder(
             itemCount: playlist["songs"].length,
             itemBuilder: (context, index) {
-              Map<dynamic, dynamic> _song = playlist["songs"][index];
+              Map<dynamic, dynamic> song = playlist["songs"][index];
               return ListTile(
                   leading: Container(
                     clipBehavior: Clip.antiAlias,
@@ -345,22 +342,22 @@ class showPlaylist extends ConsumerWidget {
                         fit: BoxFit.cover,
                         height: 60,
                         width: 60,
-                        imageUrl: _song["image"].runtimeType == List
-                            ? _song["image"][2]["link"]
-                            : _song["image"]),
+                        imageUrl: song["image"].runtimeType == List
+                            ? song["image"][2]["link"]
+                            : song["image"]),
                   ),
                   title: Text(
-                    _song["name"],
+                    song["name"],
                     maxLines: 1,
                   ),
                   subtitle: Text(
-                    _song["subtitle"],
+                    song["subtitle"],
                     maxLines: 1,
                   ),
                   onTap: () {
                     CustomNavigation.NavigateTo(
                       ref: ref,
-                      _song["type"],
+                      song["type"],
                       context,
                       "",
                       playlist["songs"],
@@ -380,7 +377,7 @@ class showPlaylist extends ConsumerWidget {
                   },
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
-                  trailing: Row(
+                  trailing: const Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       // Likebutton(songData: _song),

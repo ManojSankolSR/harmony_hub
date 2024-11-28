@@ -35,6 +35,9 @@ class UserModel extends HiveObject {
   @HiveField(9)
   List<String> downloadedSongIds;
 
+  @HiveField(10)
+  String themeMode;
+
   UserModel({
     this.seedColor = const Color.fromARGB(255, 74, 0, 87),
     this.latSessionSongs = const {},
@@ -43,6 +46,7 @@ class UserModel extends HiveObject {
     this.userPlaylists = const [],
     this.favouriteSongs = const [],
     this.downloadedSongIds = const [],
+    this.themeMode = "system",
     required this.userName,
     required this.perfferdLanguage,
     required this.audioQuality,

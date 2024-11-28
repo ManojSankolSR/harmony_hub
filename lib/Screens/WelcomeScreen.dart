@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harmony_hub/Functions/UserPreferredQuality.dart';
 import 'package:harmony_hub/Functions/language.dart';
 import 'package:harmony_hub/Hive/Boxes.dart';
-import 'package:harmony_hub/DataModels/UserModel.dart';
 import 'package:harmony_hub/Screens/HomeScreen.dart';
-import 'package:harmony_hub/Widgets/CustomButton.dart';
 
 class Welcomescreen extends ConsumerStatefulWidget {
+  const Welcomescreen({super.key});
+
   @override
   ConsumerState<Welcomescreen> createState() => _WelcomescreenState();
 }
@@ -81,7 +80,7 @@ class _WelcomescreenState extends ConsumerState<Welcomescreen> {
                 end: Alignment.bottomRight,
                 colors: [
               Theme.of(context).colorScheme.onPrimaryFixed,
-              Colors.transparent,
+              Colors.black
             ])),
         alignment: Alignment.center,
         padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -90,7 +89,7 @@ class _WelcomescreenState extends ConsumerState<Welcomescreen> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Text("Harmony",
@@ -106,7 +105,7 @@ class _WelcomescreenState extends ConsumerState<Welcomescreen> {
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).colorScheme.primary)),
               RichText(
-                  text: TextSpan(
+                  text: const TextSpan(
                       style: TextStyle(
                           height: 1, fontSize: 70, fontWeight: FontWeight.bold),
                       children: [
@@ -117,10 +116,10 @@ class _WelcomescreenState extends ConsumerState<Welcomescreen> {
                       text: ".",
                     )
                   ])),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-              Column(
+              const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Chip(label: Text("Unlimited Song Downloads")),
@@ -131,24 +130,24 @@ class _WelcomescreenState extends ConsumerState<Welcomescreen> {
                   Chip(label: Text("Many More")),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
                 // height: 45,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Color.fromARGB(255, 54, 54, 54)),
+                    color: const Color.fromARGB(255, 54, 54, 54)),
                 child: Row(
                   children: [
-                    Icon(Icons.account_circle_outlined),
-                    SizedBox(width: 10),
+                    const Icon(Icons.account_circle_outlined),
+                    const SizedBox(width: 10),
                     Expanded(
                       child: TextField(
                         controller: _textEditingController,
                         // cursorHeight: 30,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: "Enter Your Name",
                           hintStyle: TextStyle(
@@ -161,34 +160,33 @@ class _WelcomescreenState extends ConsumerState<Welcomescreen> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
               Row(
                 children: [
                   ActionChip(
-                    avatar: Icon(Icons.arrow_drop_down),
+                    avatar: const Icon(Icons.arrow_drop_down),
                     label: Text(_language),
                     onPressed: () async {
                       final data =
                           await UserPeferedLanguage.showLanguageSelectDialog(
                               context, ref,
                               isFromWlecomeScreen: true);
-                      ;
-                      if (data != null && data[0] != "") {
+                      if (data != null) {
                         setState(() {
-                          _language = data[0];
+                          _language = data;
                         });
                       }
 
                       // _showModalBottomSheetCustom(false, context);
                     },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   ActionChip(
-                      avatar: Icon(Icons.arrow_drop_down),
+                      avatar: const Icon(Icons.arrow_drop_down),
                       onPressed: () async {
                         final data =
                             await Userpreferredquality.showQualitySelectDialog(
@@ -205,7 +203,7 @@ class _WelcomescreenState extends ConsumerState<Welcomescreen> {
                       label: Text(_audioQuality)),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
               ElevatedButton(
@@ -216,10 +214,16 @@ class _WelcomescreenState extends ConsumerState<Welcomescreen> {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Homescreen(),
+                          builder: (context) => const Homescreen(),
                         ));
                   }
                 },
+                style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    foregroundColor: Colors.white,
+                    backgroundColor: Theme.of(context).colorScheme.onPrimary),
                 child: Text(
                   "Get Started",
                   style: Theme.of(context)
@@ -227,17 +231,11 @@ class _WelcomescreenState extends ConsumerState<Welcomescreen> {
                       .titleMedium!
                       .copyWith(fontWeight: FontWeight.w600),
                 ),
-                style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    foregroundColor: Colors.white,
-                    backgroundColor: Theme.of(context).colorScheme.onPrimary),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-              Text(
+              const Text(
                   "Disclaimer: We Respect your privacy more than anything else, All your details will be Stored locally on your Device ",
                   style: TextStyle(
                       fontWeight: FontWeight.w300, color: Colors.grey)),

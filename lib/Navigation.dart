@@ -4,10 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harmony_hub/Functions/MusicPlayer.dart';
 import 'package:harmony_hub/Providers/SavanApiProvider.dart';
 import 'package:harmony_hub/Screens/ArtistDetailsScreen.dart';
-import 'package:harmony_hub/Screens/SongPlayScreen.dart';
 import 'package:harmony_hub/Screens/TracksListScreen.dart';
 
-import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 class CustomNavigation {
@@ -24,13 +22,13 @@ class CustomNavigation {
     print(type);
     switch (type) {
       case "playlist" || "album":
-        // pushScreenWithNavBar(context, Trackslistscreen(id: id!, type: type));
+        pushScreenWithNavBar(context, Trackslistscreen(id: id!, type: type));
 
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Trackslistscreen(id: id!, type: type),
-            ));
+        // Navigator.push(
+        //     context,
+        //     MaterialPageRoute(
+        //       builder: (context) => Trackslistscreen(id: id!, type: type),
+        //     ));
 
         break;
       case "song":

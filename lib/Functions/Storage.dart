@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:audiotags/audiotags.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:harmony_hub/DataModels/UserModel.dart';
 import 'package:harmony_hub/Functions/AppPermissions.dart';
@@ -50,7 +49,7 @@ class Downloads {
       final String Songtitle =
           Songdata["name"].replaceAll(RegExp('[^A-Za-z0-9]'), '');
 
-      final String download_url =
+      final String downloadUrl =
           Userpreferredquality.getUserPereferedQualityLinkFomData(
               Songdata["download_url"]);
 
@@ -58,8 +57,8 @@ class Downloads {
           type: path.StorageDirectory.music);
       final savepath = "/storage/emulated/0/Music/$Songtitle.m4a";
       File file = File(savepath);
-      final downloaded_song = await http.get(Uri.parse(download_url));
-      await file.writeAsBytes(downloaded_song.bodyBytes);
+      final downloadedSong = await http.get(Uri.parse(downloadUrl));
+      await file.writeAsBytes(downloadedSong.bodyBytes);
       final picture = await http.get(Uri.parse(
         Songdata["image"].runtimeType == List
             ? Songdata["image"][2]["link"]

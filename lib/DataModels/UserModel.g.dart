@@ -30,6 +30,7 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
           .map((dynamic e) => (e as Map).cast<String, dynamic>())
           .toList(),
       downloadedSongIds: (fields[9] as List).cast<String>(),
+      themeMode: fields[10] as String,
       userName: fields[1] as String,
       perfferdLanguage: fields[2] as String,
       audioQuality: fields[3] as String,
@@ -39,7 +40,7 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
   @override
   void write(BinaryWriter writer, UserModel obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(11)
       ..writeByte(0)
       ..write(obj.latSessionSongs)
       ..writeByte(1)
@@ -59,7 +60,9 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       ..writeByte(8)
       ..write(obj.seedColor)
       ..writeByte(9)
-      ..write(obj.downloadedSongIds);
+      ..write(obj.downloadedSongIds)
+      ..writeByte(10)
+      ..write(obj.themeMode);
   }
 
   @override

@@ -1,12 +1,8 @@
 import 'dart:async';
-import 'dart:math';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harmony_hub/Functions/UserPreferredQuality.dart';
-import 'package:harmony_hub/Functions/language.dart';
 import 'package:harmony_hub/Hive/Boxes.dart';
-import 'package:harmony_hub/DataModels/UserModel.dart';
 import 'package:harmony_hub/Providers/SavanApiProvider.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
@@ -86,7 +82,7 @@ class Musicplayer {
       final currentExtras = event.currentSource!.tag.extras;
 
       await Boxes.SaveLastSsssionData({
-        "currentIndex": event!.currentIndex,
+        "currentIndex": event.currentIndex,
         "data": List.generate(
           event.sequence.length,
           (index) {

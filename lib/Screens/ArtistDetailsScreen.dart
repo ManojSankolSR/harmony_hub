@@ -1,17 +1,12 @@
-import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harmony_hub/Functions/MusicPlayer.dart';
-import 'package:harmony_hub/Navigation.dart';
 import 'package:harmony_hub/Providers/SavanApiProvider.dart';
-import 'package:harmony_hub/Widgets/MiniPlayerNavigationHandler.dart';
 import 'package:harmony_hub/Widgets/MusicListWidget.dart';
 import 'package:harmony_hub/Widgets/CategoryListView.dart';
-import 'package:harmony_hub/Widgets/SongBottomBarWidget.dart';
 import 'package:palette_generator/palette_generator.dart';
 
 class Artistdetailsscreen extends ConsumerWidget {
@@ -41,11 +36,11 @@ class Artistdetailsscreen extends ConsumerWidget {
               "title": data["modules"][tag]["title"],
               "data": data[tag]
             })
-          : SizedBox(),
+          : const SizedBox(),
     );
   }
 
-  ValueNotifier _songImageColor = ValueNotifier<Color>(Colors.transparent);
+  final ValueNotifier _songImageColor = ValueNotifier<Color>(Colors.transparent);
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // TODO: implement build
@@ -55,7 +50,7 @@ class Artistdetailsscreen extends ConsumerWidget {
             data: (data) {
               return CustomScrollView(
                 cacheExtent: 0,
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 slivers: [
                   SliverAppBar(
                     pinned: true,
@@ -82,13 +77,13 @@ class Artistdetailsscreen extends ConsumerWidget {
                                 : data["image"]),
                         builder: (context, snapshot) {
                           return LayoutBuilder(builder: (context, constraints) {
-                            double _progress =
+                            double progress =
                                 (constraints.maxHeight - 70) / (400 - 70) > 1
                                     ? 1
                                     : (constraints.maxHeight - 70) / (400 - 70);
 
                             return FlexibleSpaceBar(
-                              stretchModes: [
+                              stretchModes: const [
                                 StretchMode.blurBackground,
                                 StretchMode.zoomBackground
                               ],
@@ -100,20 +95,20 @@ class Artistdetailsscreen extends ConsumerWidget {
                                     data["name"].toString(),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(fontSize: 15),
+                                    style: const TextStyle(fontSize: 15),
                                   ),
                                   Text(
                                     data["subtitle"].toString(),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(fontSize: 12),
+                                    style: const TextStyle(fontSize: 12),
                                   ),
                                 ],
                               ),
                               titlePadding: EdgeInsets.lerp(
-                                  EdgeInsets.only(bottom: 10),
-                                  EdgeInsets.only(bottom: 1),
-                                  _progress),
+                                  const EdgeInsets.only(bottom: 10),
+                                  const EdgeInsets.only(bottom: 1),
+                                  progress),
                               centerTitle: true,
                               background: Container(
                                 decoration: BoxDecoration(
@@ -135,7 +130,7 @@ class Artistdetailsscreen extends ConsumerWidget {
                                         height:
                                             MediaQuery.of(context).size.height *
                                                 .35,
-                                        margin: EdgeInsets.all(15),
+                                        margin: const EdgeInsets.all(15),
                                         clipBehavior: Clip.antiAlias,
                                         decoration: BoxDecoration(
                                             borderRadius:
@@ -161,19 +156,19 @@ class Artistdetailsscreen extends ConsumerWidget {
                                           bottom: 0,
                                           right: 45,
                                           child: Material(
-                                            shape: CircleBorder(),
+                                            shape: const CircleBorder(),
                                             color: snapshot.data ??
                                                 Theme.of(context)
                                                     .colorScheme
-                                                    .onPrimaryFixedVariant,
+                                                    .onPrimaryContainer,
                                             child: InkWell(
-                                              customBorder: CircleBorder(),
+                                              customBorder: const CircleBorder(),
                                               onTap: () {
                                                 _playTopSongs(ref, data);
                                               },
                                               child: Container(
-                                                padding: EdgeInsets.all(8),
-                                                child: Icon(
+                                                padding: const EdgeInsets.all(8),
+                                                child: const Icon(
                                                   Icons.play_arrow,
                                                   size: 35,
                                                 ),
@@ -188,12 +183,23 @@ class Artistdetailsscreen extends ConsumerWidget {
                           });
                         }),
                   ),
+                  // SliverAppBar(
+                  //   pinned: true,
+                  //   primary: false,
+                  //   automaticallyImplyLeading: false,
+                  //   backgroundColor: Colors.transparent,
+                  //   shadowColor: Colors.transparent,
+                  //   actions: [
+                  //     IconButton.filled(
+                  //         onPressed: () {}, icon: Icon(Icons.play_arrow))
+                  //   ],
+                  // ),
                   SliverToBoxAdapter(
                     child: CategorylistviewWidget(
                         searchcategoryData: data["top_songs"],
                         categoryTitle: data["modules"]["top_songs"]["title"]),
                   ),
-                  SliverToBoxAdapter(
+                  const SliverToBoxAdapter(
                     child: SizedBox(
                       height: 15,
                     ),
@@ -210,7 +216,7 @@ class Artistdetailsscreen extends ConsumerWidget {
               );
             },
             error: (error, stackTrace) => Text(error.toString()),
-            loading: () => Center(
+            loading: () => const Center(
               child: CircularProgressIndicator(),
             ),
           ),

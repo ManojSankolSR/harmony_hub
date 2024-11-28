@@ -5,7 +5,7 @@ import 'package:harmony_hub/Hive/Boxes.dart';
 import 'package:harmony_hub/Providers/seedColorProvider.dart';
 
 class SeedColor {
-  static List<Color> _colors = [
+  static final List<Color> _colors = [
     Colors.red,
     Colors.redAccent,
     Colors.pink,
@@ -83,7 +83,7 @@ class SeedColor {
           //     )),
           SliverGrid.builder(
               gridDelegate:
-                  SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+                  const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
               itemCount: _colors.length,
               itemBuilder: (context, index) => InkWell(
                     onTap: () {
@@ -94,14 +94,14 @@ class SeedColor {
                     child: Stack(
                       children: [
                         Container(
-                          margin: EdgeInsets.all(10),
+                          margin: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
                               color: _colors[index],
                               borderRadius: BorderRadius.circular(10)),
                         ),
                         if (ref.read(seedColorProvider.notifier).loadColor() ==
                             _colors[index])
-                          Positioned(
+                          const Positioned(
                               top: 1,
                               left: 1,
                               child: Icon(

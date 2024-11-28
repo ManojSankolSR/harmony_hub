@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harmony_hub/Navigation.dart';
@@ -8,7 +7,7 @@ import 'package:harmony_hub/Widgets/DownloadButton.dart';
 import 'package:harmony_hub/Widgets/LikeButton.dart';
 
 class CategorylistviewWidget extends ConsumerWidget {
-  final List<dynamic?> searchcategoryData;
+  final List<dynamic> searchcategoryData;
   final String categoryTitle;
 
   const CategorylistviewWidget(
@@ -18,11 +17,11 @@ class CategorylistviewWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return searchcategoryData.isEmpty
-        ? SizedBox()
+        ? const SizedBox()
         : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Padding(
@@ -38,9 +37,9 @@ class CategorylistviewWidget extends ConsumerWidget {
                 ),
               ),
               ListView.builder(
-                padding: EdgeInsets.symmetric(horizontal: 5),
+                padding: const EdgeInsets.symmetric(horizontal: 5),
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: searchcategoryData.length,
                 itemBuilder: (context, index) => ListTile(
                     leading: Container(

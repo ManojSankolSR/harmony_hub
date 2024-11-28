@@ -1,16 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harmony_hub/Hive/Boxes.dart';
 import 'package:harmony_hub/Navigation.dart';
-import 'package:harmony_hub/Providers/SavanApiProvider.dart';
 import 'package:harmony_hub/Widgets/DownloadButton.dart';
 import 'package:harmony_hub/Widgets/LikeButton.dart';
 import 'package:harmony_hub/Widgets/NotFoundWidget.dart';
 import 'package:hive_flutter/adapters.dart';
 
 class Historyscreen extends ConsumerWidget {
+  const Historyscreen({super.key});
+
   // List<Map<dynamic, dynamic>> SongsHistory = Boxes.getSongsHistory();
 
   @override
@@ -22,11 +22,11 @@ class Historyscreen extends ConsumerWidget {
           stretch: true,
           flexibleSpace: FlexibleSpaceBar(
             centerTitle: true,
-            stretchModes: [StretchMode.fadeTitle],
+            stretchModes: const [StretchMode.fadeTitle],
             title: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   "Recently ",
                 ),
                 Text("Played  ",
@@ -53,7 +53,7 @@ class Historyscreen extends ConsumerWidget {
           expandedHeight: 150,
           centerTitle: true,
           leading: IconButton(
-            icon: Icon(Icons.horizontal_split_rounded),
+            icon: const Icon(Icons.horizontal_split_rounded),
             onPressed: () {
               Scaffold.of(context).openDrawer();
             },
@@ -85,7 +85,7 @@ class Historyscreen extends ConsumerWidget {
             builder: (context, value, child) {
               List<Map<String, dynamic>> SongsHistory = Boxes.getSongsHistory();
               if (SongsHistory.isEmpty) {
-                return SliverFillRemaining(
+                return const SliverFillRemaining(
                   hasScrollBody: false,
                   child: Center(child: Notfoundwidget()),
                 );

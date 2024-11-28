@@ -1,6 +1,10 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:harmony_hub/DataModels/UserModel.dart';
+import 'package:harmony_hub/Screens/WelcomeScreen.dart';
+import 'package:harmony_hub/Widgets/CustomSnackbar.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 class Boxes {
   static late Box<UserModel> UserBox;
@@ -9,6 +13,7 @@ class Boxes {
     await Hive.initFlutter();
     Hive.registerAdapter(UserModelAdapter());
     Hive.registerAdapter(ColorAdapter());
+
     UserBox = await Hive.openBox<UserModel>('UserBox');
   }
 
@@ -117,6 +122,20 @@ class Boxes {
         await user.save();
       }
     }
+  }
+
+  static Future deleteUser({required BuildContext context}) async {
+    await UserBox.delete("user");
+    pushReplacementWithoutNavBar(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const Welcomescreen(),
+        ));
+    Customsnackbar(
+        title: "User deleted",
+        subTitle: "Allthe data related to user has been erased",
+        context: context,
+        type: ContentType.warning);
   }
 
   static Future createUser(

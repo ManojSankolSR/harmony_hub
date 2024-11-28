@@ -1,51 +1,59 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:harmony_hub/DataModels/AlbumModel.dart';
+import 'package:harmony_hub/GlobalConstants.dart';
 import 'package:harmony_hub/Hive/Boxes.dart';
-import 'package:harmony_hub/DataModels/UserModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:just_audio/just_audio.dart';
 
 class SavanApi {
   static Future<Map<String, dynamic>> HomeScreenData() async {
     final Data = await http.get(Uri.parse(
-        'https://jiosaavn-api-ts.vercel.app/modules?lang=${Boxes.UserBox.get("user")!.perfferdLanguage}'));
+        'https://jiosaavn-api-ts-79ec.onrender.com/modules?lang=${Boxes.UserBox.get("user")!.perfferdLanguage}'));
 
     return jsonDecode(Data.body)["data"];
   }
 
   static Future<Map<String, dynamic>> getPlayListdata(String id) async {
-    final data = await http
-        .get(Uri.parse("https://jiosaavn-api-ts.vercel.app/playlist?id=$id"));
+    final data = await http.get(
+        Uri.parse("https://jiosaavn-api-ts-79ec.onrender.com/playlist?id=$id"));
 
     return jsonDecode(data.body)["data"];
   }
 
   static Future<Map<String, dynamic>> getAlbumdata(String id) async {
-    final data = await http
-        .get(Uri.parse("https://jiosaavn-api-ts.vercel.app/album?id=$id"));
+    final data = await http.get(
+        Uri.parse("https://jiosaavn-api-ts-79ec.onrender.com/album?id=$id"));
 
     return jsonDecode(data.body)["data"];
   }
 
   static Future<Map<String, dynamic>> getSongData(String id) async {
-    final data = await http
-        .get(Uri.parse("https://jiosaavn-api-ts.vercel.app/song?id=$id"));
+    final data = await http.get(
+        Uri.parse("https://jiosaavn-api-ts-79ec.onrender.com/song?id=$id"));
 
     return jsonDecode(data.body)["data"];
   }
 
   static Future<Map<String, dynamic>> getArtistdata(String id) async {
-    final data = await http
-        .get(Uri.parse("https://jiosaavn-api-ts.vercel.app/artist?id=$id"));
+    final data = await http.get(
+        Uri.parse("https://jiosaavn-api-ts-79ec.onrender.com/artist?id=$id"));
 
     return jsonDecode(data.body)["data"];
   }
 
   static Future<Map<String, dynamic>> getSearchdata(String query) async {
-    final data = await http
-        .get(Uri.parse("https://jiosaavn-api-ts.vercel.app/search?q=$query"));
+    if (query.isEmpty) {
+      final response = await http.get(
+          Uri.parse("https://jiosaavn-api-ts-79ec.onrender.com/search/top"));
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      print(data);
+      return data;
+    }
+
+    final data = await http.get(
+        Uri.parse("https://jiosaavn-api-ts-79ec.onrender.com/search?q=$query"));
     List<Map<String, dynamic>> newSongs = [];
 
     Map<String, dynamic> decodedData = jsonDecode(data.body)["data"];
@@ -90,12 +98,27 @@ class SavanApi {
     return decodedData;
   }
 
-  static Future<String> getSongLyrics(String id) async {
-    final data = await http
-        .get(Uri.parse("https://jiosaavn-api-ts.vercel.app/get/lyrics?id=$id"));
+  static Future<List<List<Object>>> getSongLyrics(
+      {required LRCLIB lrclib}) async {
+    // print(track_Data);
+    final str =
+        "https://lrclib.net/api/get?artist_name=${lrclib.artist_name}&track_name=${lrclib.track_name}&album_name=${lrclib.album_name}&duration=${lrclib.duration}";
+    final data = await http.get(Uri.parse(str));
+    //"https://jiosaavn-api-ts-79ec.onrender.com/get/lyrics?id=$id"
 
-    final String rawlyrics = jsonDecode(data.body)["data"]["lyrics"];
-    final String lyrics = rawlyrics.toString().replaceAll('<br>', '\n');
+    print("codestatus ${data.statusCode}");
+
+    final String rawlyrics = jsonDecode(data.body)["syncedLyrics"];
+
+    final List<String> lyrics1 = rawlyrics.split('\n');
+    final lyrics = lyrics1.map((e) {
+      return [
+        Globalconstants.parseDuration(e.split("]")[0].replaceAll("[", "")),
+        utf8.decode(e.split("]")[1].runes.toList())
+      ];
+    }).toList();
+
+    print(lyrics);
     return lyrics;
   }
 }
@@ -119,8 +142,8 @@ FutureProviderFamily<Map<String, dynamic>, String> ArtistDataProvider =
 FutureProviderFamily<Map<String, dynamic>, String> SearchDataProvider =
     FutureProviderFamily((ref, arg) => SavanApi.getSearchdata(arg));
 
-FutureProviderFamily<String, String> SongLyricsProvider =
-    FutureProviderFamily((ref, arg) => SavanApi.getSongLyrics(arg));
+FutureProviderFamily<List<dynamic>, LRCLIB> SongLyricsProvider =
+    FutureProviderFamily((ref, arg) => SavanApi.getSongLyrics(lrclib: arg));
 
 StateProvider<AudioPlayer> globalPlayerProvider = StateProvider<AudioPlayer>(
   (ref) {

@@ -11,15 +11,15 @@ class Errorwidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
+          const Icon(
             Icons.error,
             size: 50,
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
-          Text("Sorry Some Error Occured"),
-          TextButton(onPressed: ontap, child: Text("Refresh"))
+          const Text("Sorry Some Error Occured"),
+          TextButton(onPressed: ontap, child: const Text("Refresh"))
         ],
       ),
     );

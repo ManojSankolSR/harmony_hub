@@ -1,15 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harmony_hub/Hive/Boxes.dart';
 import 'package:harmony_hub/Navigation.dart';
-import 'package:harmony_hub/Providers/SavanApiProvider.dart';
 import 'package:harmony_hub/Widgets/DownloadButton.dart';
 import 'package:harmony_hub/Widgets/NotFoundWidget.dart';
 import 'package:hive_flutter/adapters.dart';
 
 class Favouritesscreen extends ConsumerWidget {
+  const Favouritesscreen({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // TODO: implement build
@@ -23,11 +23,11 @@ class Favouritesscreen extends ConsumerWidget {
                 stretch: true,
                 flexibleSpace: FlexibleSpaceBar(
                   centerTitle: true,
-                  stretchModes: [StretchMode.fadeTitle],
+                  stretchModes: const [StretchMode.fadeTitle],
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         "Favourite ",
                       ),
                       Text("Songs  ",
@@ -56,7 +56,7 @@ class Favouritesscreen extends ConsumerWidget {
                 leading: Builder(
                   builder: (context) {
                     return IconButton(
-                      icon: Icon(Icons.horizontal_split_rounded),
+                      icon: const Icon(Icons.horizontal_split_rounded),
                       onPressed: () {
                         Scaffold.of(context).openDrawer();
                       },
@@ -66,7 +66,7 @@ class Favouritesscreen extends ConsumerWidget {
                 pinned: true,
               ),
               if (SongsHistory.isEmpty)
-                SliverFillRemaining(
+                const SliverFillRemaining(
                   hasScrollBody: false,
                   child: Center(child: Notfoundwidget()),
                 ),

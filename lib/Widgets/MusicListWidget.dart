@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harmony_hub/Navigation.dart';
-import 'package:harmony_hub/Screens/TracksListScreen.dart';
 
 class MusicListWidget extends ConsumerWidget {
   final Map<String, dynamic> musicData;
@@ -30,7 +29,7 @@ class MusicListWidget extends ConsumerWidget {
         SizedBox(
           height: 220,
           child: ListView.builder(
-              padding: EdgeInsets.symmetric(horizontal: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               scrollDirection: Axis.horizontal,
               itemCount: musicData["data"].length,
               itemBuilder: (context, index) {
@@ -50,7 +49,8 @@ class MusicListWidget extends ConsumerWidget {
                     );
                   },
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                     width: 170,
                     child: Column(
                       children: [
@@ -113,7 +113,7 @@ class MusicListWidget extends ConsumerWidget {
                 );
               }),
         ),
-        SizedBox(
+        const SizedBox(
           height: 5,
         ),
       ],

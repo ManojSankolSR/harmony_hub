@@ -1,6 +1,4 @@
 import 'package:audiotags/audiotags.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harmony_hub/Functions/AppPermissions.dart';
@@ -10,11 +8,12 @@ import 'package:harmony_hub/Navigation.dart';
 import 'package:harmony_hub/Widgets/NotFoundWidget.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:permission_handler/permission_handler.dart';
 
 class Downloadscreen extends ConsumerWidget {
   final OnAudioQuery AudioQuery = OnAudioQuery();
+
+  Downloadscreen({super.key});
 
   Future<List<SongModel>> _getDownloadedSongs() async {
     final songs = await AudioQuery.querySongs(
@@ -39,11 +38,11 @@ class Downloadscreen extends ConsumerWidget {
           stretch: true,
           flexibleSpace: FlexibleSpaceBar(
             centerTitle: true,
-            stretchModes: [StretchMode.fadeTitle],
+            stretchModes: const [StretchMode.fadeTitle],
             title: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   "Down",
                 ),
                 Text("loads  ",
@@ -72,7 +71,7 @@ class Downloadscreen extends ConsumerWidget {
           leading: Builder(
             builder: (context) {
               return IconButton(
-                icon: Icon(Icons.horizontal_split_rounded),
+                icon: const Icon(Icons.horizontal_split_rounded),
                 onPressed: () {
                   Scaffold.of(context).openDrawer();
                 },
@@ -178,7 +177,7 @@ class Downloadscreen extends ConsumerWidget {
                                           children: [
                                             IconButton(
                                                 onPressed: () {},
-                                                icon: Icon(Icons
+                                                icon: const Icon(Icons
                                                     .download_done_rounded)),
                                           ],
                                         )),
@@ -187,13 +186,13 @@ class Downloadscreen extends ConsumerWidget {
                               );
                             } else if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return SliverFillRemaining(
+                              return const SliverFillRemaining(
                                 hasScrollBody: false,
                                 child:
                                     Center(child: CircularProgressIndicator()),
                               );
                             }
-                            return SliverFillRemaining(
+                            return const SliverFillRemaining(
                               hasScrollBody: false,
                               child: Center(child: Notfoundwidget()),
                             );
@@ -207,20 +206,20 @@ class Downloadscreen extends ConsumerWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
+                        const Text(
                           "Please Allow Audio Permission To Acess Downloaded songs",
                           textAlign: TextAlign.center,
                         ),
                         TextButton(
                             onPressed: () async {
-                              final _permissionStatus =
+                              final permissionStatus =
                                   await AppPermissions.requestAudioPermission();
-                              if (_permissionStatus ==
+                              if (permissionStatus ==
                                   PermissionStatus.permanentlyDenied) {
                                 await openAppSettings();
                               }
                             },
-                            child: Text("Click Here")),
+                            child: const Text("Click Here")),
                       ],
                     ),
                   ),

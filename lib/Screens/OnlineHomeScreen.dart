@@ -5,18 +5,20 @@ import 'package:harmony_hub/GlobalConstants.dart';
 import 'package:harmony_hub/Hive/Boxes.dart';
 import 'package:harmony_hub/Providers/SavanApiProvider.dart';
 import 'package:harmony_hub/Screens/SearchScreen.dart';
+import 'package:harmony_hub/Widgets/ErrorWidget.dart';
 import 'package:harmony_hub/Widgets/MusicListWidget.dart';
 import 'package:harmony_hub/Widgets/MusicListWidget2.dart';
-import 'package:m3_carousel/m3_carousel.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class OnlineHomeScreen extends ConsumerWidget {
   static const HomePageLoadingData = Globalconstants.HomePageloadingData;
+
+  const OnlineHomeScreen({super.key});
   Widget _nullCheckAndDisplayWidget(
       Map<String, dynamic> data, String catrgory) {
     return data[catrgory] != null
         ? MusicListWidget(musicData: data[catrgory])
-        : SizedBox();
+        : const SizedBox();
   }
 
   @override
@@ -29,7 +31,7 @@ class OnlineHomeScreen extends ConsumerWidget {
               scrolledUnderElevation: 0,
               centerTitle: true,
               leading: IconButton(
-                icon: Icon(Icons.horizontal_split_rounded),
+                icon: const Icon(Icons.horizontal_split_rounded),
                 onPressed: () {
                   Scaffold.of(context).openDrawer();
                 },
@@ -41,16 +43,16 @@ class OnlineHomeScreen extends ConsumerWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => Searchscreen(),
+                              builder: (context) => const Searchscreen(),
                             ));
                       },
-                      icon: Icon(CupertinoIcons.search))
+                      icon: const Icon(CupertinoIcons.search))
               ],
               // centerTitle: true,
               pinned: true,
               title: Row(
                 children: [
-                  Text(
+                  const Text(
                     "Harmony ",
                   ),
                   Text("Hub",
@@ -76,14 +78,14 @@ class OnlineHomeScreen extends ConsumerWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Searchscreen(),
+                      builder: (context) => const Searchscreen(),
                     ));
               },
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 height: 45,
-                decoration: BoxDecoration(),
-                child: Row(
+                decoration: const BoxDecoration(),
+                child: const Row(
                   children: [
                     Icon(CupertinoIcons.search),
                     SizedBox(width: 10),
@@ -129,7 +131,9 @@ class OnlineHomeScreen extends ConsumerWidget {
                     ],
                   );
                 },
-                error: (error, stackTrace) => Text(error.toString()),
+                error: (error, stackTrace) => Errorwidget(ontap: () {
+                  ref.invalidate(HomeScreenDataProvider);
+                }),
                 loading: () {
                   return Skeletonizer(
                     enabled: true,
