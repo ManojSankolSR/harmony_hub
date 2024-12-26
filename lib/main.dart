@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:harmony_hub/Functions/AppPermissions.dart';
 import 'package:harmony_hub/Hive/Boxes.dart';
 import 'package:harmony_hub/Navigation.dart';
@@ -9,6 +10,7 @@ import 'package:harmony_hub/Providers/seedColorProvider.dart';
 import 'package:harmony_hub/Screens/HomeScreen.dart';
 import 'package:harmony_hub/Screens/WelcomeScreen.dart';
 import 'package:just_audio_background/just_audio_background.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 // import 'package:metadata_god/metadata_god_web.dart';
 
 Future<void> main() async {
@@ -38,67 +40,86 @@ class MyApp extends ConsumerWidget {
     final brightness =
         themeMode == ThemeMode.dark ? Brightness.dark : Brightness.light;
     final Color seedColor = ref.watch(seedColorProvider);
-    return MaterialApp(
-        navigatorKey: navigatorKey,
-        title: 'Flutter Demo',
-        themeMode: themeMode,
-        scrollBehavior: ScrollConfiguration.of(context).copyWith(
-          physics: const BouncingScrollPhysics(),
-        ),
-        theme: ThemeData.light(useMaterial3: true).copyWith(
-          brightness: Brightness.light,
 
-          colorScheme: ColorScheme.fromSeed(
-              onPrimary: ColorScheme.fromSeed(
-                      seedColor: seedColor, brightness: Brightness.light)
-                  .primaryContainer,
-              seedColor: seedColor,
-              brightness: Brightness.light),
-          pageTransitionsTheme: PageTransitionsTheme(builders: {
-            TargetPlatform.android: FadeInOutTransition(),
-            TargetPlatform.iOS: const CupertinoPageTransitionsBuilder(),
-          }),
-          iconTheme: const IconThemeData().copyWith(color: Colors.black),
-          iconButtonTheme: IconButtonThemeData(
-              style: IconButton.styleFrom(foregroundColor: Colors.black)),
-          listTileTheme: const ListTileThemeData().copyWith(
-              textColor: Colors.black,
-              iconColor: Colors.black,
-              contentPadding: const EdgeInsets.only(left: 10, right: 5),
-              titleTextStyle:
-                  const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-              subtitleTextStyle: const TextStyle(fontWeight: FontWeight.w300)),
-          scaffoldBackgroundColor: ColorScheme.fromSeed(
-                  seedColor: seedColor, brightness: Brightness.light)
-              .surface,
-          // appBarTheme: AppBarTheme(backgroundColor: Colors.grey.shade900),
-        ),
-        darkTheme: ThemeData.dark(useMaterial3: true).copyWith(
-            brightness: Brightness.dark,
-            colorScheme: ColorScheme.fromSeed(
-                seedColor: seedColor, brightness: Brightness.dark),
+    final artWorkColorScheme = ref.watch(artWorkColorSchemeProvider);
+
+    return ResponsiveSizer(
+      builder: (p0, p1, p2) => MaterialApp(
+          navigatorKey: navigatorKey,
+          title: 'Flutter Demo',
+          themeMode: themeMode,
+          scrollBehavior: ScrollConfiguration.of(context).copyWith(
+            physics: const BouncingScrollPhysics(),
+          ),
+          theme: ThemeData.light(useMaterial3: true).copyWith(
+            colorScheme: artWorkColorScheme,
+            brightness: Brightness.light,
+
+            // colorScheme: ColorScheme.fromSeed(
+            //     onPrimary: ColorScheme.fromSeed(
+            //             seedColor: seedColor, brightness: Brightness.light)
+            //         .primaryContainer,
+            //     seedColor: seedColor,
+            //     brightness: Brightness.light),
             pageTransitionsTheme: PageTransitionsTheme(builders: {
               TargetPlatform.android: FadeInOutTransition(),
               TargetPlatform.iOS: const CupertinoPageTransitionsBuilder(),
             }),
+            iconTheme: const IconThemeData().copyWith(color: Colors.black),
             iconButtonTheme: IconButtonThemeData(
-                style: IconButton.styleFrom(foregroundColor: Colors.white)),
+                style: IconButton.styleFrom(foregroundColor: Colors.black)),
             listTileTheme: const ListTileThemeData().copyWith(
+                textColor: Colors.black,
+                iconColor: Colors.black,
                 contentPadding: const EdgeInsets.only(left: 10, right: 5),
-                textColor: Colors.white,
-                iconColor: Colors.white,
                 titleTextStyle:
                     const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 subtitleTextStyle:
                     const TextStyle(fontWeight: FontWeight.w300)),
-            iconTheme: const IconThemeData().copyWith(color: Colors.white),
             scaffoldBackgroundColor: ColorScheme.fromSeed(
-                    seedColor: seedColor, brightness: Brightness.dark)
+                    seedColor: seedColor, brightness: Brightness.light)
                 .surface,
             // appBarTheme: AppBarTheme(backgroundColor: Colors.grey.shade900),
-            textTheme: const TextTheme().copyWith()),
-        home: Boxes.UserBox.containsKey("user")
-            ? const Homescreen()
-            : const Welcomescreen());
+          ),
+          darkTheme: ThemeData.dark(useMaterial3: true).copyWith(
+              brightness: Brightness.dark,
+              colorScheme: artWorkColorScheme,
+              //  ColorScheme.fromSeed(
+              //     primary: Colors.white,
+              //     primaryContainer: Colors.grey.shade800,
+              //     secondaryContainer: Colors.grey.shade900,
+              //     seedColor: artWorkColorScheme,
+              //     brightness: Brightness.dark),
+              pageTransitionsTheme: PageTransitionsTheme(builders: {
+                TargetPlatform.android: FadeInOutTransition(),
+                TargetPlatform.iOS: const CupertinoPageTransitionsBuilder(),
+              }),
+              iconButtonTheme: IconButtonThemeData(
+                  style: IconButton.styleFrom(foregroundColor: Colors.white)),
+              listTileTheme: const ListTileThemeData().copyWith(
+                  contentPadding: const EdgeInsets.only(left: 10, right: 5),
+                  textColor: Colors.white,
+                  iconColor: Colors.white,
+                  titleTextStyle: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.w500),
+                  subtitleTextStyle:
+                      const TextStyle(fontWeight: FontWeight.w300)),
+              iconTheme: const IconThemeData().copyWith(color: Colors.white),
+              // scaffoldBackgroundColor: const Color.fromRGBO(33, 33, 33, 1),
+              //  ColorScheme.fromSeed(
+              //         seedColor: seedColor, brightness: Brightness.dark)
+              //     .surface,
+              // appBarTheme: AppBarTheme(
+              //     backgroundColor: const Color.fromRGBO(33, 33, 33, 1),
+              //     ),
+              scaffoldBackgroundColor: artWorkColorScheme.surface,
+              // appBarTheme: AppBarTheme(backgroundColor: Colors.grey.shade900),
+
+              textTheme:
+                  GoogleFonts.aBeeZeeTextTheme(ThemeData.dark().textTheme)),
+          home: Boxes.UserBox.containsKey("user")
+              ? const Homescreen()
+              : const Welcomescreen()),
+    );
   }
 }

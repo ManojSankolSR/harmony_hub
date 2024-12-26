@@ -87,11 +87,11 @@ class _ArtworkwidgetState extends ConsumerState<Artworkwidget>
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 boxShadow: [
-                  BoxShadow(
-                      blurRadius: 20,
-                      offset: Offset(1, 1),
-                      spreadRadius: 5,
-                      color: widget.shadowcolor)
+                  // BoxShadow(
+                  //     blurRadius: 20,
+                  //     offset: Offset(1, 1),
+                  //     spreadRadius: 5,
+                  //     color: widget.shadowcolor)
                 ],
                 color: _frontSide ? Colors.transparent : Colors.black26,
                 borderRadius: BorderRadius.circular(20),

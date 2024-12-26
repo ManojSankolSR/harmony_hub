@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harmony_hub/Navigation.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class Musiclistwidget2 extends ConsumerStatefulWidget {
   final Map<String, dynamic> musicData;
@@ -24,7 +25,7 @@ class _Musiclistwidget2State extends ConsumerState<Musiclistwidget2> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.all(15.0),
+          padding: const EdgeInsets.symmetric(horizontal: 15.0),
           child: Text(
             widget.musicData["title"],
             style: Theme.of(context).textTheme.titleLarge!.copyWith(
@@ -33,15 +34,18 @@ class _Musiclistwidget2State extends ConsumerState<Musiclistwidget2> {
                 color: Theme.of(context).colorScheme.primary),
           ),
         ),
+        SizedBox(
+          height: 10,
+        ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: SizedBox(
               // height: 260,
-              height: 240,
+              height: .85.dp,
               // width: MediaQuery.of(context).size.width,
               child: CarouselView(
                   elevation: 2,
-                  reverse: true,
+                  // reverse: true,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15)),
                   onTap: (value) {
@@ -57,9 +61,9 @@ class _Musiclistwidget2State extends ConsumerState<Musiclistwidget2> {
                         data["type"] == "song" ? 0 : value,
                         false);
                   },
-                  itemExtent: MediaQuery.of(context).size.width * .4,
-                  shrinkExtent: MediaQuery.of(context).size.width * .1,
-                  itemSnapping: true,
+                  itemExtent: MediaQuery.of(context).size.width * .8,
+                  shrinkExtent: MediaQuery.of(context).size.width * .2,
+                  // itemSnapping: true,
                   children: List.generate(
                     widget.musicData["data"].length,
                     (index) => Stack(
@@ -81,12 +85,16 @@ class _Musiclistwidget2State extends ConsumerState<Musiclistwidget2> {
                         Positioned(
                             bottom: 0,
                             left: 0,
-                            right: 0,
+                            top: 0,
+
+                            // right: 0,
                             child: ClipRRect(
                               clipBehavior: Clip.hardEdge,
                               child: BackdropFilter(
                                 filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                                 child: Container(
+                                  padding: EdgeInsets.all(20),
+                                  width: 200,
                                   decoration: BoxDecoration(
                                       gradient: LinearGradient(
                                           colors: [
@@ -97,13 +105,53 @@ class _Musiclistwidget2State extends ConsumerState<Musiclistwidget2> {
                                           end: Alignment.topCenter)),
                                   alignment: Alignment.center,
                                   height: 50,
-                                  child: Text(
-                                    widget.musicData["data"][index]["name"],
-                                    textAlign: TextAlign.center,
-                                    maxLines: 2,
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w500),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        widget.musicData["data"][index]["name"],
+                                        textAlign: TextAlign.start,
+                                        maxLines: 2,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleLarge!
+                                            .copyWith(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w500),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          // IconButton(
+                                          //     iconSize: 40,
+                                          //     onPressed: () => {},
+                                          //     icon: Icon(Icons
+                                          //         .favorite_border_rounded)),
+                                          IconButton.filled(
+                                              iconSize: 20.sp,
+                                              onPressed: () => {},
+                                              icon: Icon(
+                                                Icons.play_arrow,
+                                                color: Colors.black,
+                                              ))
+                                        ],
+                                      ),
+                                      // Text(
+                                      //   "${widget.musicData["data"][index]["type"].toUpperCase()}  • ${widget.musicData["data"][index]["subtitle"] == null ? "" : widget.musicData["data"][index]["subtitle"].toUpperCase()}",
+                                      //   style: Theme.of(context)
+                                      //       .textTheme
+                                      //       .titleSmall!
+                                      //       .copyWith(
+                                      //           color: Colors.white,
+                                      //           fontWeight: FontWeight.w400),
+                                      //   softWrap: false,
+                                      //   overflow: TextOverflow.ellipsis,
+                                      // )
+                                    ],
                                   ),
                                 ),
                               ),

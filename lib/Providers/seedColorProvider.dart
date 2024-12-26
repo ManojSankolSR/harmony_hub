@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harmony_hub/Functions/SeedColor.dart';
@@ -24,5 +26,12 @@ final seedColorProvider = StateNotifierProvider<seedColorNotifier, Color>(
 final MiniplayerControllerProvider = StateProvider<MiniplayerController>(
   (ref) {
     return MiniplayerController();
+  },
+);
+
+final artWorkColorSchemeProvider = StateProvider<ColorScheme>(
+  (ref) {
+    return ColorScheme.fromSeed(
+        seedColor: Colors.grey, brightness: Brightness.dark);
   },
 );

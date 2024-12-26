@@ -10,17 +10,12 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 class Playlistscreen extends ConsumerWidget {
-  final PersistentTabController _persistentTabController;
-
-  const Playlistscreen(
-      {super.key, required PersistentTabController persistentTabController})
-      : _persistentTabController = persistentTabController;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // TODO: implement build
     return CustomScrollView(
       slivers: [
-        SliverAppBar.medium(
+        SliverAppBar(
           stretch: true,
           flexibleSpace: FlexibleSpaceBar(
             centerTitle: true,
@@ -41,29 +36,8 @@ class Playlistscreen extends ConsumerWidget {
                 )
               ],
             ),
-            background: Container(
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                    Theme.of(context).colorScheme.onPrimary,
-                    Theme.of(context).colorScheme.surface,
-                  ])),
-            ),
           ),
-          expandedHeight: 150,
           centerTitle: true,
-          leading: Builder(
-            builder: (context) {
-              return IconButton(
-                icon: const Icon(Icons.horizontal_split_rounded),
-                onPressed: () {
-                  _persistentTabController.openDrawer();
-                },
-              );
-            },
-          ),
           pinned: true,
         ),
         // SliverAppBar.medium(
@@ -250,7 +224,8 @@ class showPlaylist extends ConsumerWidget {
                 StretchMode.blurBackground,
                 StretchMode.zoomBackground
               ],
-              titlePadding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+              titlePadding:
+                  const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -277,13 +252,14 @@ class showPlaylist extends ConsumerWidget {
               background: Container(
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                      Theme.of(context).colorScheme.onPrimary,
-                      Colors.transparent
-                    ])),
+                    // gradient: LinearGradient(
+                    //     begin: Alignment.topCenter,
+                    //     end: Alignment.bottomCenter,
+                    //     colors: [
+                    //   Theme.of(context).colorScheme.onPrimary,
+                    //   Colors.transparent
+                    // ])
+                    ),
                 child: UnconstrainedBox(
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width * .4,

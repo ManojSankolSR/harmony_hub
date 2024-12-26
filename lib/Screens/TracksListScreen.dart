@@ -11,7 +11,9 @@ import 'package:harmony_hub/Widgets/CustomButton.dart';
 import 'package:harmony_hub/Widgets/DownloadButton.dart';
 import 'package:harmony_hub/Widgets/LikeButton.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:palette_generator/palette_generator.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class Trackslistscreen extends ConsumerWidget {
@@ -27,9 +29,13 @@ class Trackslistscreen extends ConsumerWidget {
 
   Future<Color> _getColorFromImage(String url) async {
     final imageloc = CachedNetworkImageProvider(url);
-    final paletteGenerator = await PaletteGenerator.fromImageProvider(imageloc);
+    final paletteGenerator =
+        await ColorScheme.fromImageProvider(provider: imageloc);
+    // PaletteGenerator.fromImageProvider(imageloc);
 
-    return paletteGenerator.dominantColor?.color ?? Colors.transparent;
+    // return paletteGenerator.dominantColor?.color ?? Colors.transparent;
+
+    return paletteGenerator.primary;
   }
 
   @override
@@ -223,6 +229,17 @@ class Trackslistscreen extends ConsumerWidget {
               toolbarHeight: 65,
               expandedHeight: 240,
               automaticallyImplyLeading: !isCollapsed,
+              leading: IconButton(
+                  style: IconButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    // backgroundColor: snapshot.data
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(AntDesign.arrow_left_outline)),
               title: isCollapsed
                   ? Row(
                       mainAxisSize: MainAxisSize.min,
@@ -231,42 +248,32 @@ class Trackslistscreen extends ConsumerWidget {
                         const SizedBox(
                           width: 10,
                         ),
-                        IconButton.outlined(
-                            style: IconButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              // backgroundColor: snapshot.data
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: Icon(Icons.arrow_back_ios_new_rounded)),
+
                         // GestureDetector(
                         //     onTap: () {
                         //       Navigator.pop(context);
                         //     },
                         //     child: const Icon(Icons.arrow_back)),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        Container(
-                          width: 50,
-                          height: 50,
-                          clipBehavior: Clip.hardEdge,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10)),
-                          child: CachedNetworkImage(
-                              fit: BoxFit.fill,
-                              placeholder: (context, url) => Image.asset(
-                                  fit: BoxFit.cover, "assets/album.png"),
-                              errorWidget: (context, url, error) => Image.asset(
-                                  fit: BoxFit.cover, "assets/album.png"),
-                              imageUrl: playListImage),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
+                        // const SizedBox(
+                        //   width: 8,
+                        // ),
+                        // Container(
+                        //   width: 50,
+                        //   height: 50,
+                        //   clipBehavior: Clip.hardEdge,
+                        //   decoration: BoxDecoration(
+                        //       borderRadius: BorderRadius.circular(10)),
+                        //   child: CachedNetworkImage(
+                        //       fit: BoxFit.fill,
+                        //       placeholder: (context, url) => Image.asset(
+                        //           fit: BoxFit.cover, "assets/album.png"),
+                        //       errorWidget: (context, url, error) => Image.asset(
+                        //           fit: BoxFit.cover, "assets/album.png"),
+                        //       imageUrl: playListImage),
+                        // ),
+                        // const SizedBox(
+                        //   width: 10,
+                        // ),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -289,7 +296,7 @@ class Trackslistscreen extends ConsumerWidget {
                         const SizedBox(
                           width: 30,
                         ),
-                        IconButton.outlined(
+                        IconButton(
                             color: Colors.white,
                             style: IconButton.styleFrom(
                               shape: RoundedRectangleBorder(
@@ -308,7 +315,8 @@ class Trackslistscreen extends ConsumerWidget {
                                 false,
                               );
                             },
-                            icon: const Icon(Icons.play_arrow)),
+                            iconSize: 25.sp,
+                            icon: const Icon(EvaIcons.play_circle)),
                         const SizedBox(
                           width: 10,
                         ),

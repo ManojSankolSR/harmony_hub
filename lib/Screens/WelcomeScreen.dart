@@ -134,7 +134,8 @@ class _WelcomescreenState extends ConsumerState<Welcomescreen> {
                 height: 30,
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
                 // height: 45,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),

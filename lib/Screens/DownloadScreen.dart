@@ -32,201 +32,184 @@ class Downloadscreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // TODO: implement build
-    return CustomScrollView(
-      slivers: [
-        SliverAppBar.medium(
-          stretch: true,
-          flexibleSpace: FlexibleSpaceBar(
+    return Scaffold(
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            stretch: true,
+            flexibleSpace: FlexibleSpaceBar(
+              centerTitle: true,
+              stretchModes: const [StretchMode.fadeTitle],
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    "Down",
+                  ),
+                  Text("loads  ",
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                      )),
+                  Icon(
+                    Icons.file_download_outlined,
+                    color: Theme.of(context).colorScheme.primary,
+                  )
+                ],
+              ),
+            ),
+            // expandedHeight: 150,
             centerTitle: true,
-            stretchModes: const [StretchMode.fadeTitle],
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  "Down",
-                ),
-                Text("loads  ",
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                    )),
-                Icon(
-                  Icons.file_download_outlined,
-                  color: Theme.of(context).colorScheme.primary,
-                )
-              ],
-            ),
-            background: Container(
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                    Theme.of(context).colorScheme.onPrimary,
-                    Theme.of(context).colorScheme.surface
-                  ])),
-            ),
+            pinned: true,
           ),
-          expandedHeight: 150,
-          centerTitle: true,
-          leading: Builder(
-            builder: (context) {
-              return IconButton(
-                icon: const Icon(Icons.horizontal_split_rounded),
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
-                },
-              );
-            },
-          ),
-          pinned: true,
-        ),
-        // SliverAppBar.medium(
-        //     leading: Builder(builder: (context) {
-        //       return IconButton(
-        //         icon: Icon(Icons.horizontal_split_rounded),
-        //         onPressed: () {
-        //           Scaffold.of(context).openDrawer();
-        //         },
-        //       );
-        //     }),
-        //     // centerTitle: true,
-        //     pinned: true,
-        //     title: Row(
-        //       children: [
-        //         Text(
-        //           "Down",
-        //         ),
-        //         Text("loads",
-        //             style: TextStyle(
-        //               color: Theme.of(context).colorScheme.primary,
-        //             ))
-        //       ],
-        //     )),
-        FutureBuilder<PermissionStatus>(
-            future: AppPermissions.requestAudioPermission(),
-            builder: (context, snapshot) {
-              if (snapshot.data == PermissionStatus.granted) {
-                return ValueListenableBuilder(
-                    valueListenable: Boxes.UserBox.listenable(),
-                    builder: (context, value, child) {
-                      return FutureBuilder(
-                          future: _getDownloadedSongs(),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                              return SliverList.builder(
-                                itemCount: snapshot.data!.length,
-                                itemBuilder: (context, index) {
-                                  return Dismissible(
-                                    key: ValueKey(index),
-                                    direction: DismissDirection.startToEnd,
-                                    // confirmDismiss: (direction) async {},
-                                    onDismissed: (direction) async {
-                                      Tag tag = await getAudioTag(
-                                          snapshot.data![index].displayName);
-                                      await Downloads.deleteDownloadedFile(
-                                          snapshot.data![index].displayName,
-                                          context,
-                                          tag.genre!);
-                                    },
-                                    background: Container(
-                                      color: Colors.red,
-                                    ),
-                                    child: ListTile(
-                                        leading: Container(
-                                          clipBehavior: Clip.antiAlias,
-                                          decoration: BoxDecoration(
+          // SliverAppBar.medium(
+          //     leading: Builder(builder: (context) {
+          //       return IconButton(
+          //         icon: Icon(Icons.horizontal_split_rounded),
+          //         onPressed: () {
+          //           Scaffold.of(context).openDrawer();
+          //         },
+          //       );
+          //     }),
+          //     // centerTitle: true,
+          //     pinned: true,
+          //     title: Row(
+          //       children: [
+          //         Text(
+          //           "Down",
+          //         ),
+          //         Text("loads",
+          //             style: TextStyle(
+          //               color: Theme.of(context).colorScheme.primary,
+          //             ))
+          //       ],
+          //     )),
+          FutureBuilder<PermissionStatus>(
+              future: AppPermissions.requestAudioPermission(),
+              builder: (context, snapshot) {
+                if (snapshot.data == PermissionStatus.granted) {
+                  return ValueListenableBuilder(
+                      valueListenable: Boxes.UserBox.listenable(),
+                      builder: (context, value, child) {
+                        return FutureBuilder(
+                            future: _getDownloadedSongs(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData &&
+                                  snapshot.data!.isNotEmpty) {
+                                return SliverList.builder(
+                                  itemCount: snapshot.data!.length,
+                                  itemBuilder: (context, index) {
+                                    return Dismissible(
+                                      key: ValueKey(index),
+                                      direction: DismissDirection.startToEnd,
+                                      // confirmDismiss: (direction) async {},
+                                      onDismissed: (direction) async {
+                                        Tag tag = await getAudioTag(
+                                            snapshot.data![index].displayName);
+                                        await Downloads.deleteDownloadedFile(
+                                            snapshot.data![index].displayName,
+                                            context,
+                                            tag.genre!);
+                                      },
+                                      background: Container(
+                                        color: Colors.red,
+                                      ),
+                                      child: ListTile(
+                                          leading: Container(
+                                            clipBehavior: Clip.antiAlias,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                            child: QueryArtworkWidget(
+                                                errorBuilder: (p0, p1, p2) {
+                                                  return Image.asset(
+                                                      "assets/song.png");
+                                                },
+                                                nullArtworkWidget: Image.asset(
+                                                    "assets/song.png"),
+                                                artworkBorder:
+                                                    BorderRadius.circular(1),
+                                                id: snapshot.data![index].id,
+                                                type: ArtworkType.AUDIO),
+                                          ),
+                                          title: Text(
+                                            snapshot.data![index].title,
+                                            maxLines: 1,
+                                          ),
+                                          subtitle: Text(
+                                            snapshot.data![index].artist ??
+                                                "Unknown",
+                                            maxLines: 1,
+                                          ),
+                                          onTap: () {
+                                            CustomNavigation.NavigateTo(
+                                              ref: ref,
+                                              "song",
+                                              context,
+                                              "",
+                                              snapshot.data,
+                                              index,
+                                              false,
+                                            );
+                                          },
+                                          shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(10)),
-                                          child: QueryArtworkWidget(
-                                              errorBuilder: (p0, p1, p2) {
-                                                return Image.asset(
-                                                    "assets/song.png");
-                                              },
-                                              nullArtworkWidget: Image.asset(
-                                                  "assets/song.png"),
-                                              artworkBorder:
-                                                  BorderRadius.circular(1),
-                                              id: snapshot.data![index].id,
-                                              type: ArtworkType.AUDIO),
-                                        ),
-                                        title: Text(
-                                          snapshot.data![index].title,
-                                          maxLines: 1,
-                                        ),
-                                        subtitle: Text(
-                                          snapshot.data![index].artist ??
-                                              "Unknown",
-                                          maxLines: 1,
-                                        ),
-                                        onTap: () {
-                                          CustomNavigation.NavigateTo(
-                                            ref: ref,
-                                            "song",
-                                            context,
-                                            "",
-                                            snapshot.data,
-                                            index,
-                                            false,
-                                          );
-                                        },
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        trailing: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            IconButton(
-                                                onPressed: () {},
-                                                icon: const Icon(Icons
-                                                    .download_done_rounded)),
-                                          ],
-                                        )),
-                                  );
-                                },
-                              );
-                            } else if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
+                                          trailing: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              IconButton(
+                                                  onPressed: () {},
+                                                  icon: const Icon(Icons
+                                                      .download_done_rounded)),
+                                            ],
+                                          )),
+                                    );
+                                  },
+                                );
+                              } else if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const SliverFillRemaining(
+                                  hasScrollBody: false,
+                                  child: Center(
+                                      child: CircularProgressIndicator()),
+                                );
+                              }
                               return const SliverFillRemaining(
                                 hasScrollBody: false,
-                                child:
-                                    Center(child: CircularProgressIndicator()),
+                                child: Center(child: Notfoundwidget()),
                               );
-                            }
-                            return const SliverFillRemaining(
-                              hasScrollBody: false,
-                              child: Center(child: Notfoundwidget()),
-                            );
-                          });
-                    });
-              } else {
-                return SliverFillRemaining(
-                  hasScrollBody: false,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "Please Allow Audio Permission To Acess Downloaded songs",
-                          textAlign: TextAlign.center,
-                        ),
-                        TextButton(
-                            onPressed: () async {
-                              final permissionStatus =
-                                  await AppPermissions.requestAudioPermission();
-                              if (permissionStatus ==
-                                  PermissionStatus.permanentlyDenied) {
-                                await openAppSettings();
-                              }
-                            },
-                            child: const Text("Click Here")),
-                      ],
+                            });
+                      });
+                } else {
+                  return SliverFillRemaining(
+                    hasScrollBody: false,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "Please Allow Audio Permission To Acess Downloaded songs",
+                            textAlign: TextAlign.center,
+                          ),
+                          TextButton(
+                              onPressed: () async {
+                                final permissionStatus = await AppPermissions
+                                    .requestAudioPermission();
+                                if (permissionStatus ==
+                                    PermissionStatus.permanentlyDenied) {
+                                  await openAppSettings();
+                                }
+                              },
+                              child: const Text("Click Here")),
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              }
-            })
-      ],
+                  );
+                }
+              })
+        ],
+      ),
     );
   }
 }

@@ -159,14 +159,19 @@ class Boxes {
             audioQuality: audioQuality));
   }
 
-  static dynamic getUserData() {
+  static UserModel getUserData() {
     if (UserBox.containsKey("user")) {
       dynamic data = UserBox.get("user");
 
       if (data.latSessionSongs.isNotEmpty) {
         return data;
+      } else {
+        return UserModel(
+            userName: "Unknown", perfferdLanguage: "", audioQuality: "");
       }
+    } else {
+      return UserModel(
+          userName: "Unknown", perfferdLanguage: "", audioQuality: "");
     }
-    return false;
   }
 }

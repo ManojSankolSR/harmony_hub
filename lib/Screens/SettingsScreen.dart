@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:harmony_hub/Functions/SeedColor.dart';
 import 'package:harmony_hub/Functions/ThemeModeHelper.dart';
 import 'package:harmony_hub/Functions/UserPreferredQuality.dart';
@@ -14,7 +15,9 @@ import 'package:harmony_hub/Screens/AboutScreen.dart';
 import 'package:harmony_hub/Screens/WelcomeScreen.dart';
 import 'package:harmony_hub/Widgets/AppDialogs.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -45,52 +48,85 @@ class _SettingsscreenState extends ConsumerState<Settingsscreen> {
     // TODO: implement build
     return CustomScrollView(
       slivers: [
-        SliverAppBar.medium(
-          stretch: true,
-          flexibleSpace: FlexibleSpaceBar(
-            centerTitle: true,
-            stretchModes: [StretchMode.fadeTitle],
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Sett",
-                ),
-                Text("ings  ",
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                    )),
-                Icon(
-                  Icons.settings,
-                  color: Theme.of(context).colorScheme.primary,
-                )
-              ],
-            ),
-            background: Container(
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                    Theme.of(context).colorScheme.onPrimary,
-                    Theme.of(context).colorScheme.surface,
-                  ])),
-            ),
+        SliverAppBar(
+          automaticallyImplyLeading: false,
+          toolbarHeight: 80,
+          floating: true,
+          leading: Icon(
+            AntDesign.setting_outline,
+            color: Theme.of(context).colorScheme.primary,
+            size: 23.sp,
           ),
-          expandedHeight: 150,
-          centerTitle: true,
-          leading: Builder(
-            builder: (context) {
-              return IconButton(
-                icon: Icon(Icons.horizontal_split_rounded),
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
-                },
-              );
-            },
+          titleSpacing: 3,
+          // actions: [
+          //   SizedBox(
+          //     height: 22.sp,
+          //     width: 22.sp,
+          //     child: Image.asset(
+          //       "assets/splash.png",
+          //     ),
+          //   ),
+          //   SizedBox(
+          //     width: 20,
+          //   ),
+          // ],
+          title: Row(
+            children: [
+              Text(
+                "Sett",
+                style: GoogleFonts.permanentMarker(
+                    // color: Theme.of(context).colorScheme.primary,
+                    fontSize: 22.sp,
+                    fontWeight: FontWeight.w100),
+              ),
+              Text(
+                "ings ",
+                style: GoogleFonts.permanentMarker(
+                    color: Theme.of(context).colorScheme.primary,
+                    fontSize: 22.sp,
+                    fontWeight: FontWeight.w100),
+              ),
+            ],
           ),
-          pinned: true,
         ),
+
+        // SliverAppBar(
+        //   stretch: true,
+        //   flexibleSpace: FlexibleSpaceBar(
+        //     centerTitle: true,
+        //     stretchModes: [StretchMode.fadeTitle],
+        // title: Row(
+        //   mainAxisAlignment: MainAxisAlignment.center,
+        //   children: [
+        //     Text(
+        //       "Sett",
+        //     ),
+        //     Text("ings  ",
+        //         style: TextStyle(
+        //           color: Theme.of(context).colorScheme.primary,
+        //         )),
+        //     Icon(
+        //       Icons.settings,
+        //       color: Theme.of(context).colorScheme.primary,
+        //     )
+        //   ],
+        // ),
+        //   ),
+        //   // expandedHeight: 130,
+        //   centerTitle: true,
+        //   // leading: Builder(
+        //   //   builder: (context) {
+        //   //     return IconButton(
+        //   //       icon: Icon(Icons.horizontal_split_rounded),
+        //   //       onPressed: () {
+        //   //         Scaffold.of(context).openDrawer();
+        //   //       },
+        //   //     );
+        //   //   },
+        //   // ),
+        //   pinned: true,
+        // ),
+
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),

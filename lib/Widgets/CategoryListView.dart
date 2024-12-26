@@ -24,18 +24,18 @@ class CategorylistviewWidget extends ConsumerWidget {
               const SizedBox(
                 height: 10,
               ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                child: Text(
-                  categoryTitle,
-                  textAlign: TextAlign.start,
-                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                      fontSize: 19,
-                      fontWeight: FontWeight.w500,
-                      color: Theme.of(context).colorScheme.primary),
-                ),
-              ),
+              // Padding(
+              //   padding:
+              //       const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+              //   child: Text(
+              //     categoryTitle,
+              //     textAlign: TextAlign.start,
+              //     style: Theme.of(context).textTheme.titleMedium!.copyWith(
+              //         fontSize: 19,
+              //         fontWeight: FontWeight.w500,
+              //         color: Theme.of(context).colorScheme.primary),
+              //   ),
+              // ),
               ListView.builder(
                 padding: const EdgeInsets.symmetric(horizontal: 5),
                 shrinkWrap: true,
